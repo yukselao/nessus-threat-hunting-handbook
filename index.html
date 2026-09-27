@@ -1,8 +1,26 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="288 verified INFO-severity Nessus plugins for threat hunting on Windows, Linux and macOS, mapped to MITRE ATT&amp;CK Enterprise v19, with sample output and a detection angle for each.">
+<meta name="author" content="Ali Okan Y&uuml;ksel">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Threat Hunter's Nessus Handbook">
+<meta property="og:description" content="288 verified INFO-severity Nessus plugins for threat hunting on Windows, Linux and macOS, mapped to MITRE ATT&amp;CK Enterprise v19, with sample output and a detection angle for each.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%23e8ff01'/%3E%3Cg fill='%231e2326' opacity='0.34'%3E%3Crect x='6.6' y='6.6' width='4.6' height='4.6' rx='1.1'/%3E%3Crect x='12.7' y='6.6' width='4.6' height='4.6' rx='1.1'/%3E%3Crect x='18.8' y='6.6' width='4.6' height='4.6' rx='1.1'/%3E%3Crect x='6.6' y='12.7' width='4.6' height='4.6' rx='1.1'/%3E%3Crect x='18.8' y='12.7' width='4.6' height='4.6' rx='1.1'/%3E%3Crect x='6.6' y='18.8' width='4.6' height='4.6' rx='1.1'/%3E%3Crect x='12.7' y='18.8' width='4.6' height='4.6' rx='1.1'/%3E%3Crect x='18.8' y='18.8' width='4.6' height='4.6' rx='1.1'/%3E%3C/g%3E%3Crect x='12.7' y='12.7' width='4.6' height='4.6' rx='1.1' fill='%231e2326'/%3E%3C/svg%3E">
 <title>Threat Hunter's Nessus Handbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#f2f4f0}
+img{max-width:100%}
+[hidden]{display:none!important}
+.tgtheme{font-variant-emoji:text}
+</style>
 <style>
 /* ===== Tenable current identity: charcoal #1E2326 · volt lime #E8FF01 · white =====
    Data panels are charcoal in BOTH themes; the chart trio #8a9d00/#3f9ae9/#d5628f and the
@@ -118,17 +136,24 @@ h1{font-size:clamp(28px,4.2vw,44px);font-weight:700;line-height:1.05;color:var(-
   border-bottom:1px solid var(--ink-line);backdrop-filter:blur(10px);
   transform:translateY(-102%);transition:transform .22s ease}
 .sticky.on{transform:translateY(0)}
-.sk{display:flex;align-items:center;gap:12px;height:48px}
+.sk{display:flex;align-items:center;gap:10px;height:48px;min-width:0;overflow:hidden}
 .sk .mark .mk-t{font-size:12.5px}
-.sk .crumb{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--onink-3);min-width:0}
+.sk .crumb{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--onink-3);
+  min-width:0;flex:1 1 0;overflow:hidden}
 .sk .crumb .sl{color:var(--onink-3);opacity:.6}
 .sk .crumb b{color:var(--onink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sk .sk-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.sk .sk-r{margin-left:auto;display:flex;align-items:center;gap:7px;flex:none}
 .topbtn{appearance:none;background:rgba(255,255,255,.08);border:1px solid var(--ink-line);
   border-radius:7px;color:var(--onink-2);font:600 11.5px/1 "IBM Plex Sans",sans-serif;
   padding:7px 10px;cursor:pointer;white-space:nowrap}
 .topbtn:hover{background:rgba(255,255,255,.16);color:#fff}
 @media (max-width:700px){.sk .crumb .hidesm{display:none}}
+@media (max-width:560px){
+  .sk .crumb{display:none}
+  .sk .mark .mk-t{display:none}
+  .sk .searchbtn span:not(.kbd):not(.grow){display:none}
+  .sk .searchbtn{padding:8px}
+}
 
 /* ================= shell + sidebar ================= */
 .shell{max-width:1460px;margin:0 auto;display:grid;grid-template-columns:252px minmax(0,1fr);align-items:start}
@@ -196,6 +221,8 @@ section.panel[hidden]{display:none!important}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
 .card-pad{padding:20px 22px}
 h2.sec{font-size:21px;font-weight:700;margin-bottom:6px}
+.hcount{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--ink-3);background:var(--surface-2);
+  border:1px solid var(--line);border-radius:5px;padding:4px 7px;margin-left:9px;vertical-align:middle}
 h3.sub{font-size:16px;font-weight:600;margin-bottom:4px}
 .dek{color:var(--ink-2);max-width:80ch;font-size:14.5px}
 .stack{display:flex;flex-direction:column;gap:22px}
@@ -221,8 +248,9 @@ h3.sub{font-size:16px;font-weight:600;margin-bottom:4px}
 .pid{display:inline-block;font-size:13px;font-weight:500;color:var(--accent);text-decoration:none;
   background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:3px 7px;font-variant-numeric:tabular-nums}
 .pid:hover{border-color:var(--accent-line);background:var(--accent-soft)}
-.plg-name{font-family:Archivo,sans-serif;font-size:14.5px;font-weight:600;line-height:1.3}
-.plg-ret{color:var(--ink-2);font-size:13.5px;margin-top:3px}
+.plg-head > div{min-width:0}
+.plg-name{font-family:Archivo,sans-serif;font-size:14.5px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.plg-ret{color:var(--ink-2);font-size:13.5px;margin-top:3px;overflow-wrap:anywhere}
 .plg-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
 .tag{font-size:11px;font-weight:600;letter-spacing:.03em;padding:2px 7px;border-radius:5px;
   background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line)}
@@ -271,7 +299,8 @@ button.tt{cursor:pointer}
 button.tt:hover{border-color:var(--accent-line);background:var(--accent-soft);color:var(--accent)}
 .pivot{background:var(--surface-3);border:1px dashed var(--line-2);border-radius:8px;padding:11px 13px;font-size:13px;color:var(--ink-2)}
 .pivot code,.dek code,.note code,td code,li code,p code{background:var(--surface-2);border:1px solid var(--line);
-  border-radius:4px;padding:1px 5px;font-size:12.3px;color:var(--ink);font-family:"IBM Plex Mono",monospace}
+  border-radius:4px;padding:1px 5px;font-size:12.3px;color:var(--ink);font-family:"IBM Plex Mono",monospace;
+  overflow-wrap:anywhere}
 
 /* ================= filters ================= */
 .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--surface);
@@ -298,9 +327,16 @@ button.tt:hover{border-color:var(--accent-line);background:var(--accent-soft);co
 .tglbtn{appearance:none;background:var(--surface-3);border:1px solid var(--line);border-radius:6px;
   color:var(--ink-2);font:600 11.5px/1 "IBM Plex Sans",sans-serif;padding:6px 9px;cursor:pointer;white-space:nowrap}
 .tglbtn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)}
-.chart-box{padding:4px 12px 18px;position:relative}
-.chart-box.c1{height:500px} .chart-box.c2{height:430px} .chart-box.c3{height:420px}
-@media (max-width:640px){.chart-box.c1{height:440px}.chart-box.c2{height:400px}.chart-box.c3{height:390px}}
+.chart-box{padding:8px 14px 14px;position:relative;min-height:60px}
+.bars{display:block;width:100%;height:auto}
+.bars .grid{stroke:var(--p-grid);stroke-width:1;shape-rendering:crispEdges}
+.bars .axis{stroke:var(--p-line);stroke-width:1;shape-rendering:crispEdges}
+.bars .lab{fill:var(--p-ink2);font:500 12px "IBM Plex Sans",system-ui,sans-serif}
+.bars .tick{fill:var(--p-ink3);font:500 11px "IBM Plex Mono",monospace}
+.bars .val{fill:var(--p-ink2);font:500 11.5px "IBM Plex Mono",monospace}
+.bars .bar{transition:opacity .12s}
+.bars .bar.s1{fill:var(--s1)} .bars .bar.s2{fill:var(--s2)} .bars .bar.s3{fill:var(--s3)}
+.bars .bar:hover{opacity:.82}
 .legend{display:flex;flex-wrap:wrap;gap:14px;padding:0 18px 14px}
 .legend .li{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2);font-weight:500}
 .swatch{width:11px;height:11px;border-radius:3px;flex:none}
@@ -329,6 +365,50 @@ button.tt:hover{border-color:var(--accent-line);background:var(--accent-soft);co
 .limebtn:hover{background:var(--lime-2)}
 .limerule{height:3px;background:var(--lime);width:54px;border-radius:2px}
 
+/* ================= global search ================= */
+.searchbtn{appearance:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+  background:rgba(255,255,255,.07);border:1px solid var(--ink-line);border-radius:8px;
+  color:var(--onink-3);font:500 12.5px/1 "IBM Plex Sans",sans-serif;padding:8px 10px;white-space:nowrap}
+.searchbtn:hover{background:rgba(255,255,255,.14);color:var(--onink)}
+.searchbtn .kbd{font:600 10.5px/1 "IBM Plex Mono",monospace;border:1px solid var(--ink-line);
+  border-radius:4px;padding:3px 5px;color:var(--onink-3);background:rgba(0,0,0,.2)}
+.searchbtn .grow{width:78px}
+@media (max-width:700px){.searchbtn .grow,.searchbtn .kbd{display:none}}
+#scrim{position:fixed;inset:0;background:rgba(8,11,12,.6);z-index:80}
+#sbox{position:fixed;top:11vh;left:50%;transform:translateX(-50%);z-index:81;
+  width:min(720px,calc(100vw - 28px));max-height:76vh;display:flex;flex-direction:column;
+  background:var(--surface);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;
+  box-shadow:0 24px 70px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.04)}
+#sbox .sin{display:flex;align-items:center;gap:11px;padding:14px 16px;border-bottom:1px solid var(--line)}
+#sbox .sin svg{color:var(--ink-3);flex:none}
+#sbox input{flex:1;min-width:0;border:0;background:none;outline:none;color:var(--ink);
+  font:400 16.5px/1.3 "IBM Plex Sans",sans-serif}
+#sbox input::placeholder{color:var(--ink-3)}
+#sbox .esc{font:600 10.5px/1 "IBM Plex Mono",monospace;border:1px solid var(--line);border-radius:4px;
+  padding:4px 6px;color:var(--ink-3);background:var(--surface-2)}
+#sres{overflow-y:auto;padding:6px 6px 10px;overscroll-behavior:contain}
+#sres .sgrp{font:700 10.5px/1 "IBM Plex Sans",sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);padding:12px 10px 6px}
+.sitem{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:11px;align-items:center;
+  padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.sitem:hover{background:var(--surface-3)}
+.sitem.on{background:var(--accent-soft);border-color:var(--accent-line)}
+.sitem .sid{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--ink-2);background:var(--surface-2);
+  border:1px solid var(--line);border-radius:5px;padding:4px 6px;min-width:60px;text-align:center}
+.sitem .sbody{min-width:0}
+.sitem .sname{display:block;font:600 13.5px/1.35 "IBM Plex Sans",sans-serif;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sitem .ssub{display:block;font-size:12px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sitem .sway{font:500 10.5px/1 "IBM Plex Sans",sans-serif;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ink-3);white-space:nowrap}
+.sitem mark{background:var(--lime);color:var(--onlime);border-radius:2px;padding:0 1px}
+#sfoot{border-top:1px solid var(--line);padding:9px 14px;display:flex;gap:14px;flex-wrap:wrap;
+  font:500 11.5px/1 "IBM Plex Sans",sans-serif;color:var(--ink-3);background:var(--surface-3)}
+#sfoot b{font:600 10px/1 "IBM Plex Mono",monospace;border:1px solid var(--line);border-radius:3px;
+  padding:3px 4px;background:var(--surface);color:var(--ink-2)}
+.snone{padding:34px 16px;text-align:center;color:var(--ink-3);font-size:14px}
+.plg.flash,.tcard.flash{border-color:var(--lime-2);box-shadow:0 0 0 3px var(--accent-soft)}
+
 /* ================= tables ================= */
 .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
 table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px}
@@ -340,7 +420,26 @@ tbody tr:hover{background:var(--surface-3)}
 td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
 .st{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;white-space:nowrap}
 .st .ic{width:14px;height:14px;flex:none}
-.st.full{color:var(--good)} .st.part{color:var(--warn)} .st.none{color:var(--ink-3)}
+.st.full{color:var(--good)} .st.part{color:var(--warn)}
+.st.audit{color:var(--ink-2)} .st.none{color:var(--ink-3)}
+td.mq{min-width:270px;max-width:640px}
+td.mq b{font-size:14px}
+td.mq .mn{display:block;margin-top:5px;font-size:12.7px;line-height:1.55;color:var(--ink-3);font-weight:400}
+td.mv{white-space:nowrap;vertical-align:top;padding-top:11px;width:1%}
+#matrixwrap table{min-width:640px}
+#mtally{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 14px;padding:11px 14px;
+  background:var(--surface);border:1px solid var(--line);border-radius:8px}
+#mtally .st{font-size:12.5px}
+#mtally .st b{color:var(--ink);margin-left:2px}
+@media (max-width:620px){
+  #matrixwrap table{min-width:0}
+  #matrixwrap thead{display:none}
+  #matrixwrap tr{display:block;border-bottom:1px solid var(--line);padding:12px 13px}
+  #matrixwrap td{display:block;border:0;padding:0}
+  #matrixwrap td.mv{display:inline-flex;margin:9px 14px 0 0;width:auto;padding-top:0}
+  #matrixwrap td.mv::before{content:attr(data-p);font:600 10px/1 "IBM Plex Sans",sans-serif;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-right:6px;align-self:center}
+}
 
 /* ================= ATT&CK matrix ================= */
 .mxwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);
@@ -385,7 +484,8 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
 .tc-hd:hover{background:var(--surface-3)}
 .tc-hd .tcid{font:500 12.5px/1 "IBM Plex Mono",monospace;background:var(--surface-2);border:1px solid var(--line);
   border-radius:6px;padding:4px 6px;color:var(--ink-2);display:inline-block}
-.tc-hd h4{font:600 14.5px/1.3 Archivo,sans-serif}
+.tc-hd > div{min-width:0}
+.tc-hd h4{font:600 14.5px/1.3 Archivo,sans-serif;overflow-wrap:anywhere}
 .tc-tac{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
 .tacchip{font:600 10.5px/1 "IBM Plex Sans",sans-serif;letter-spacing:.03em;text-transform:uppercase;
   padding:3px 7px;border-radius:4px;background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line)}
@@ -448,6 +548,15 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
   font-size:11.5px;color:var(--onink-3);line-height:1.55}
 @media (max-width:860px){.col-in{grid-template-columns:1fr;gap:26px}}
 </style>
+<style>
+.fchip .dim{opacity:.62}
+.pc .core-dot{color:var(--lime-2)}
+html:not([data-ready]) .boot-hint{display:block}
+.boot-hint{display:none;margin:0 0 18px;padding:13px 15px;border-radius:8px;
+  background:var(--warn-bg);border:1px solid color-mix(in srgb,var(--warn) 42%,transparent);
+  font-size:13.5px;color:var(--ink-2)}
+</style></head>
+<body>
 
 <svg style="display:none" aria-hidden="true"><symbol id="mk" viewBox="0 0 30 30">
   <rect width="30" height="30" rx="7" fill="#e8ff01"/>
@@ -474,7 +583,12 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
     <div class="tb-meta">
       <span>Edition <b>Sep 2026</b></span><span class="sep"></span>
       <span>ATT&amp;CK <b>Enterprise v19</b></span><span class="sep"></span>
-      <span><b>263</b> plugins verified</span>
+      <span><b id="tb-count">0</b> plugins verified</span><span class="sep"></span>
+      <span><b id="t-out">0</b> sample outputs</span>
+      <span class="sep"></span>
+      <button class="topbtn tgtheme" id="themeToggle" type="button" aria-label="Switch colour theme"><span id="themeIcon">◐</span> Theme</button>
+      <span class="sep"></span>
+      <button class="searchbtn" data-search type="button" aria-label="Search the handbook"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3L14 14"/></svg><span>Search</span><span class="grow"></span><span class="kbd">/</span></button>
     </div>
   </div></div></div>
 
@@ -507,7 +621,6 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
     <div class="tile mac"><div class="n" id="t-mac">0</div><div class="l">macOS</div></div>
     <div class="tile att"><div class="n" id="t-tech">0</div><div class="l">ATT&amp;CK techniques</div></div>
     <div class="tile"><div class="n" id="t-core">0</div><div class="l">Core hunt set</div></div>
-    <div class="tile gap"><div class="n">21</div><div class="l">Blind spots</div></div>
   </div></div></div>
 </header>
 
@@ -519,9 +632,23 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
   <span class="crumb"><span class="sl hidesm">&rsaquo;</span><span class="hidesm" id="sk-group"></span>
     <span class="sl">&rsaquo;</span><b id="sk-sec"></b></span>
   <span class="sk-r">
+    <button class="searchbtn" data-search type="button" aria-label="Search the handbook"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3L14 14"/></svg><span>Search</span><span class="grow"></span><span class="kbd">/</span></button>
+    <button class="topbtn tgtheme" id="themeToggle2" type="button" aria-label="Switch colour theme"><span id="themeIcon2">◐</span> Theme</button>
     <button class="topbtn" id="sk-top" type="button">&uarr; Top</button>
   </span>
 </div></div></div>
+
+<div id="scrim" hidden></div>
+<div id="sbox" role="dialog" aria-modal="true" aria-label="Search the handbook" hidden>
+  <div class="sin">
+    <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3L14 14"/></svg>
+    <input type="search" id="sq" placeholder="Search plugins, techniques and sections&hellip;" autocomplete="off" spellcheck="false" aria-label="Search query">
+    <span class="esc">esc</span>
+  </div>
+  <div id="sres"></div>
+  <div id="sfoot"><span><b>&uarr;</b> <b>&darr;</b> navigate</span><span><b>&crarr;</b> open</span>
+    <span><b>esc</b> close</span><span style="margin-left:auto" id="scount"></span></div>
+</div>
 
 <div class="shell">
 <aside class="side">
@@ -541,11 +668,6 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
     <button role="tab" data-tab="attck" data-group="Detection view"><span class="sw"></span><span class="lbl">ATT&amp;CK matrix</span><span class="ct" id="c-tech"></span></button>
     <button role="tab" data-tab="play" data-group="Detection view"><span class="sw"></span><span class="lbl">Hunt playbooks</span><span class="ct">7</span></button>
   </div>
-  <div class="sgroup">Running it</div>
-  <div class="snav" role="tablist">
-    <button role="tab" data-tab="gaps" data-group="Running it"><span class="sw"></span><span class="lbl">Coverage &amp; gaps</span></button>
-    <button role="tab" data-tab="setup" data-group="Running it"><span class="sw"></span><span class="lbl">Scan setup</span></button>
-  </div>
   <div class="sgroup otp-h">On this page</div>
   <nav id="otp" aria-label="On this page"></nav>
   <div class="sidemeta">
@@ -562,12 +684,16 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
 <!-- ================= OVERVIEW ================= -->
 <section class="panel" id="p-overview" role="tabpanel">
   <div class="stack">
+    <noscript><div class="boot-hint" style="display:block"><b>This page needs JavaScript.</b>
+      The plugin tables, the coverage map, the ATT&amp;CK matrix and the search index are all built in the
+      browser from data embedded in this one file. Nothing is fetched from anywhere.</div></noscript>
     <div class="phead" id="s-ov-intro">
       <div class="crumbs"><span>Start here</span><span class="sl">&rsaquo;</span><b>Overview</b></div>
       <h2>A scanner you already run, read as a hunting sensor</h2>
-      <p class="dek">Eight sections. Start with the two charts below to see where the data is, use the platform
-        tabs when you know which plugin you need, and use the ATT&amp;CK matrix when you know which technique
-        you are hunting and need to find the data for it.</p>
+      <p class="dek">Three ways in. Start with the two charts below to see <b>where the data is</b>; use the
+        platform tabs when you already know <b>which plugin</b> you need; use the ATT&amp;CK matrix when you
+        know <b>which technique</b> you are hunting and need to find the data for it. Search
+        (<code>/</code> or <code>Ctrl</code>+<code>K</code>) reaches all of it at once.</p>
     </div>
 
     <div class="grid2">
@@ -611,7 +737,7 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
         </div>
         <button class="tglbtn" id="tg1" aria-pressed="false">Table view</button>
       </div>
-      <div class="chart-box c1"><canvas id="chart1"></canvas></div>
+      <div class="chart-box" id="chart1"></div>
       <div class="tblwrap" id="tbl1" hidden style="border-radius:0;border-left:0;border-right:0;border-bottom:0"></div>
     </div>
     </div>
@@ -621,8 +747,9 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
       <div class="chart-hd">
         <div class="grow">
           <h3>Platform coverage is not symmetric</h3>
-          <p>Plugin count per hunting question, split by platform. macOS is thin by a wide margin &mdash; the
-            persistence and process classes have no plugin coverage at all.</p>
+          <p>Plugin count per hunting question, split by platform. macOS is thinner overall, but the gap is
+            specific rather than general: inventory, accounts, processes and listeners are covered, while
+            persistence and security configuration are not.</p>
         </div>
         <button class="tglbtn" id="tg2" aria-pressed="false">Table view</button>
       </div>
@@ -631,21 +758,34 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
         <span class="li"><span class="swatch" style="background:var(--s2)"></span>Linux / Unix</span>
         <span class="li"><span class="swatch" style="background:var(--s3)"></span>macOS</span>
       </div>
-      <div class="chart-box c2"><canvas id="chart2"></canvas></div>
+      <div class="chart-box" id="chart2"></div>
       <div class="tblwrap" id="tbl2" hidden style="border-radius:0;border-left:0;border-right:0;border-bottom:0"></div>
     </div>
     </div>
 
     <div id="s-ov-cap">
-      <h2 class="sec">Collection capability by platform</h2>
-      <p class="dek" style="margin-bottom:14px">Read this before you promise a hunt. &ldquo;Partial&rdquo; means
-        something is returned but not the artifact a hunter would actually want.</p>
-      <div class="tblwrap">
+      <h2 class="sec">Coverage map <span class="hcount"><span id="t-cov">0</span> hunting questions</span></h2>
+      <p class="dek" style="margin-bottom:12px">Read this before you promise a hunt. Four verdicts, and the
+        difference between the last two is what most coverage tables get wrong:
+        <b>Covered</b> &mdash; a plugin returns the artifact.
+        <b>Partial</b> &mdash; a plugin returns some of it, but not the part a hunter wants.
+        <b>Audit file</b> &mdash; no plugin exists, but a compliance <code>.audit</code> check reaches it, so the
+        data is available if you run a compliance scan.
+        <b>Nothing</b> &mdash; not reachable from Nessus at all; this needs an EDR or a forensic pull.</p>
+      <div id="mtally"></div>
+      <div class="tblwrap" id="matrixwrap">
         <table>
-          <thead><tr><th style="min-width:210px">Hunting question</th><th>Windows</th><th>Linux / Unix</th><th>macOS</th><th style="min-width:230px">Note</th></tr></thead>
+          <thead><tr><th>Hunting question &amp; evidence</th><th>Windows</th><th>Linux / Unix</th><th>macOS</th></tr></thead>
           <tbody id="matrix"></tbody>
         </table>
       </div>
+      <p class="dek" style="margin-top:12px;font-size:13px">Each verdict was tested against Tenable's plugin
+        API rather than the site search: the complete Windows family (8,629 plugins) and the entire
+        MacOS&nbsp;X&nbsp;Local&nbsp;Security&nbsp;Checks family (3,482) were enumerated and searched by name,
+        synopsis and description, with cross-family checks across every sensor, and each surviving candidate
+        verified at <code>/plugins/api/v1/nessus/&lt;id&gt;</code>. An <b>Audit file</b> verdict means a
+        compliance check reaches the data even though no plugin reports it. The plugin feed moves, so
+        re-check before you rely on a negative.</p>
     </div>
 
     <div id="s-ov-t1" class="card" style="overflow:hidden">
@@ -728,16 +868,19 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
     <div class="phead">
       <div class="crumbs"><span>Plugins by platform</span><span class="sl">&rsaquo;</span><b>macOS</b></div>
       <h2>macOS</h2>
-      <p class="dek">Set expectations before you scope a Mac hunt. The realistic ceiling from Nessus is
-        software inventory, privileged-group membership, listeners, Chrome extensions and code-signing
-        failures. There is <b>no plugin</b> for LaunchAgents, LaunchDaemons, kernel or system extensions, a
-        full process list, MDM profiles or TCC grants &mdash; those are audit-file or EDR territory.</p>
+      <p class="dek">macOS coverage is better than its reputation, and worse in one specific place. Inventory,
+        accounts, processes and listeners are all genuinely covered: <b>95929</b> returns every local and service
+        account, and <b>110483</b> returns the full process list on a Mac despite being named for Unix/Linux.
+        What is missing is <b>persistence and security configuration</b> &mdash; LaunchAgents, LaunchDaemons,
+        kernel and system extensions, MDM profiles, TCC grants, SIP and firewall rules have no plugin between
+        them.</p>
     </div>
     <div class="note warn">
-      <b>Plan around this:</b> macOS persistence hunting cannot be done from Nessus plugin output. Use a
-      CIS/NIST <code>.audit</code> file for SIP, Gatekeeper and profile state, and an EDR for
-      <code>~/Library/LaunchAgents</code>. Plugin <b>121029</b> (process code-signing failures) is the closest
-      thing to a process-level signal.
+      <b>Plan around this:</b> macOS <i>persistence</i> hunting cannot be done from Nessus plugin output. Use a
+      CIS/NIST <code>.audit</code> file for SIP, Gatekeeper and firewall state, and an EDR for
+      <code>~/Library/LaunchAgents</code> and kernel extensions. For everything else, <b>110483</b> gives you
+      the process list, <b>121029</b> and <b>121032</b>&ndash;<b>121034</b> partition it by code-signing verdict,
+      and <b>71264</b> flags processes never seen before in the estate.
     </div>
     <div class="filters" data-for="mac">
       <div class="search">
@@ -770,6 +913,50 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
       <span class="fcount" data-count="all"></span>
     </div>
     <div data-list="all"></div>
+
+    <div id="s-all-sev">
+      <h2 class="sec">Careful: these sit beside the set above and are not Info</h2>
+      <p class="dek" style="margin-bottom:14px">Every row here is adjacent to a plugin in this handbook and
+        is <b>not</b> Info severity, so it changes how a finding is triaged, ticketed and SLA'd. Sweeping one
+        into an Info-only dashboard, or citing one as an enumeration plugin, is the most common mistake made
+        with this data.</p>
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th class="num">ID</th><th style="min-width:230px">Name</th><th>Severity</th><th style="min-width:200px">Why it matters here</th></tr></thead>
+          <tbody>
+            <tr><td class="num">59275</td><td>Malicious Process Detection</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>The parent of the Info-severity Authenticode sub-plugins. A hit is an incident, not enumeration.</td></tr>
+            <tr><td class="num">64687</td><td>Malicious Process Detection: APT1 Software Running</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Same family, same treatment.</td></tr>
+            <tr><td class="num">64788</td><td>Malicious Process Detection: Malware Signed By Stolen Bit9 Certificate</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Same family.</td></tr>
+            <tr><td class="num">65548</td><td>Malicious Process Detection: User Defined Malware Running</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Fires on your own hash list &mdash; the useful half of the Malware Scan template.</td></tr>
+            <tr><td class="num">104855</td><td>Malicious Process Detection: Authenticode With Invalid Signature</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Its siblings (104856, 104857, 105045, 108411) are Info; this one is not.</td></tr>
+            <tr><td class="num">71261</td><td>Linux Malicious Process Detection</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Hash-matched Linux processes.</td></tr>
+            <tr><td class="num">91223</td><td>Malicious Process Detection: User Defined Malware Running (Linux)</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Your hash list, Linux side.</td></tr>
+            <tr><td class="num">56568</td><td>Mac OS X XProtect Installed</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Fires when XProtect is installed but updates are disabled or definitions are stale.</td></tr>
+            <tr><td class="num">33850</td><td>Unix Operating System Unsupported Version Detection</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Unix only &mdash; it does not cover macOS.</td></tr>
+            <tr><td class="num">103569</td><td>Windows Defender Antimalware/Antivirus Signature Definition Check</td><td><span class="st"><b style="color:var(--crit)">High</b></span></td><td>The only real Defender <i>status</i> plugin. 131023 and 112279 are presence-only.</td></tr>
+            <tr><td class="num">10907</td><td>Microsoft Windows Guest Account Belongs to a Group</td><td><span class="st"><b style="color:var(--crit)">High</b></span></td><td>Sits in the middle of the Info user-management block.</td></tr>
+            <tr><td class="num">56211</td><td>SMB Use Host SID to Enumerate Local Users Without Credentials</td><td><span class="st"><b style="color:var(--warn)">Medium</b></span></td><td>The uncredentialed twin of 10860.</td></tr>
+            <tr><td class="num">121030</td><td>MacOS Process Code Signing: Invalid</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Its four siblings (121029, 121032&ndash;121034) are Info. This one and 121031 are not.</td></tr>
+            <tr><td class="num">121031</td><td>MacOS Process Code Signing: Invalid Apple</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>A process presenting itself as Apple-signed but failing verification.</td></tr>
+            <tr><td class="num">11356</td><td>NFS Exported Share Information Disclosure</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Fires when the scanner could actually mount the export. 10437 (the export list) is Info.</td></tr>
+            <tr><td class="num">65057</td><td>Insecure Windows Service Permissions</td><td><span class="st"><b style="color:var(--crit)">High</b></span></td><td>The permissions plugin most people expect to be Info. Service executables modifiable by Everyone / Users / Authenticated Users.</td></tr>
+            <tr><td class="num">10427</td><td>Microsoft Windows SMB Registry : Registry HKLM_LOCAL_MACHINE Permissions</td><td><span class="st"><b style="color:var(--crit)">High</b></span></td><td>HKLM writable by non-admins &mdash; a finding, not an inventory item.</td></tr>
+            <tr><td class="num">42256</td><td>NFS Shares World Readable</td><td><span class="st"><b style="color:var(--warn)">Medium</b></span></td><td>Exports published with no host or IP restriction.</td></tr>
+            <tr><td class="num">18602</td><td>Microsoft Windows SMB svcctl MSRPC Interface SCM Service Enumeration</td><td><span class="st"><b style="color:var(--warn)">Medium</b></span></td><td>An <i>enumeration</i>-named plugin that is Medium. Easy to sweep into an Info dashboard by mistake.</td></tr>
+            <tr><td class="num">172180</td><td>Potentially Dangerous PATH Variables</td><td><span class="st"><b style="color:var(--warn)">Medium</b></span></td><td>World-writable or relative PATH directories on Windows, macOS and Unix. Read it next to 333918 and 168980.</td></tr>
+            <tr><td class="num">345664</td><td>Command Path Injection</td><td><span class="st"><b style="color:var(--warn)">Medium</b></span></td><td>PATH entries that are user-controlled, relative or world-writable.</td></tr>
+            <tr><td class="num">114464</td><td>SSH Authorized Keys File Detected</td><td><span class="st"><b style="color:var(--warn)">Medium &middot; WAS</b></span></td><td><b>Not a Nessus plugin.</b> Tenable Web App Scanning, for an <code>authorized_keys</code> file exposed over HTTP. <code>/plugins/nessus/114464</code> is a 404.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <div class="note crit" id="s-all-dep">
+      <b>Deprecated &mdash; do not build on it.</b> Plugin <b>12634</b> &ldquo;Authenticated Check: OS Name and
+      Installed Package Enumeration&rdquo; still appears in Tenable's own Useful Plugins guide and in older
+      runbooks, but its plugin page now returns <i>deprecated and no longer functional</i>. Use <b>97993</b>
+      (OS Identification and Installed Software Enumeration over SSH v2) instead. Plugin 83991's dependency
+      chain still references 12634 &mdash; that reference is stale.
+    </div>
   </div>
 </section>
 
@@ -818,7 +1005,7 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
         </div>
         <button class="tglbtn" id="tg3" aria-pressed="false">Table view</button>
       </div>
-      <div class="chart-box c3"><canvas id="chart3"></canvas></div>
+      <div class="chart-box" id="chart3"></div>
       <div class="tblwrap" id="tbl3" hidden style="border-radius:0;border-left:0;border-right:0;border-bottom:0"></div>
     </div>
     </div>
@@ -855,8 +1042,7 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
         <li style="margin-bottom:7px"><b>Timeline and asset context</b> &mdash; 92369 (time zone), 92366 and
           56468 (boot time), 34096, 86420, 131568. Not detections; the difference between an artifact and
           evidence you can put in a timeline.</li>
-        <li><b>Extension point</b> &mdash; 21156, 24760, 66756. Audit files are how you reach the techniques
-          the coverage-and-gaps tab lists as unreachable.</li>
+        <li><b>Extension point</b> &mdash; 21156, 24760, 66756. Audit files are how you reach the artifacts the coverage map marks <i>Audit file</i> &mdash; cron jobs, systemd timers, kernel modules, audit policy, macOS SIP and the macOS firewall among them.</li>
       </ul>
     </div>
   </div>
@@ -1056,187 +1242,6 @@ td.num{font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;w
   </div>
 </section>
 
-<!-- ================= GAPS ================= -->
-<section class="panel" id="p-gaps" role="tabpanel" hidden>
-  <div class="stack">
-    <div class="phead" id="s-gp-intro">
-      <div class="crumbs"><span>Running it</span><span class="sl">&rsaquo;</span><b>Coverage &amp; gaps</b></div>
-      <h2>What Nessus will not give you</h2>
-      <p class="dek">These were searched for specifically and no matching plugin exists. Knowing the gap is
-        worth as much as knowing the coverage &mdash; it stops a hunt plan from promising data that will never
-        arrive, and it tells you which questions have to go to an audit file, an EDR, or the event log.</p>
-    </div>
-    <div class="tblwrap" id="s-gp-blind">
-      <table>
-        <thead><tr><th style="min-width:200px">Artifact with no plugin</th><th>Platform</th><th style="min-width:240px">Closest thing Nessus has</th><th style="min-width:180px">Where to get it instead</th></tr></thead>
-        <tbody>
-          <tr><td>WMI permanent event consumers</td><td>Windows</td><td>Nothing. Real blind spot &mdash; T1546.003 is invisible here.</td><td>EDR, or <code>Get-WmiObject -Namespace root\subscription</code> via a custom audit</td></tr>
-          <tr><td>AmCache</td><td>Windows</td><td><b>92415</b> Application Compatibility Cache (ShimCache)</td><td>Forensic collection of <code>Amcache.hve</code></td></tr>
-          <tr><td>SRUM (app / network usage)</td><td>Windows</td><td>Nothing</td><td>Forensic collection of <code>SRUDB.dat</code></td></tr>
-          <tr><td>Audit policy / advanced audit settings</td><td>Windows</td><td>Compliance audit items only (<b>21156</b>)</td><td>CIS <code>.audit</code> file, or <code>auditpol</code> via GPO reporting</td></tr>
-          <tr><td>PowerShell script block &amp; module logging state</td><td>Windows</td><td><b>92367</b> execution policy, <b>92368</b> WSH settings</td><td><code>.audit</code> file checking the registry policy keys</td></tr>
-          <tr><td>General file and folder ACLs</td><td>Windows</td><td><b>160576</b> service registry ACLs, <b>60119</b> share permissions</td><td><code>.audit</code> file with file-permission checks</td></tr>
-          <tr><td>Trusted root / certificate store contents</td><td>Windows</td><td><b>56954</b> revoked certificates only</td><td>EDR or a custom audit of the cert stores</td></tr>
-          <tr><td>Scheduled tasks as a first-class inventory</td><td>Windows</td><td><b>70625</b> AutoRuns Scheduled Tasks &mdash; the only source</td><td>Adequate in practice; no separate plugin exists</td></tr>
-          <tr><td>cron and at jobs</td><td>Linux</td><td>Nothing</td><td><code>.audit</code> file, or EDR</td></tr>
-          <tr><td>systemd units and timers</td><td>Linux</td><td>Nothing &mdash; the modern persistence location is uncovered</td><td><code>.audit</code> file with a custom <code>CMD_EXEC</code> check</td></tr>
-          <tr><td>Loaded kernel modules</td><td>Linux</td><td>Nothing</td><td><code>.audit</code> file running <code>lsmod</code></td></tr>
-          <tr><td>SSH <code>authorized_keys</code></td><td>Linux</td><td>Nothing (32320 is a weak-key vuln check, not an inventory)</td><td><code>.audit</code> file, or configuration management</td></tr>
-          <tr><td>setuid/setgid and world-writable file discovery</td><td>Linux</td><td>Nothing</td><td><code>.audit</code> file with a <code>FILE_CHECK</code> sweep</td></tr>
-          <tr><td>wtmp / last-logon history</td><td>Linux</td><td>Nothing (Windows has <b>38689</b>; Linux has no counterpart)</td><td>Syslog / SIEM</td></tr>
-          <tr><td><code>sudoers</code> contents</td><td>Linux</td><td><b>95928</b> returns users and groups only</td><td><code>.audit</code> file</td></tr>
-          <tr><td>LaunchAgents / LaunchDaemons</td><td>macOS</td><td>Nothing</td><td>EDR &mdash; there is no Nessus path to macOS persistence</td></tr>
-          <tr><td>Kernel and system extensions (kext)</td><td>macOS</td><td>Nothing</td><td>EDR, or <code>.audit</code> with <code>kmutil showloaded</code></td></tr>
-          <tr><td>Full running-process list</td><td>macOS</td><td><b>121029</b> code-signing failures, <b>99265</b> listeners</td><td>EDR. 110483 is Unix/Linux-scoped and skips macOS</td></tr>
-          <tr><td>MDM configuration profiles</td><td>macOS</td><td>Nothing (65676 is a server-side vuln check)</td><td>The MDM itself, or an <code>.audit</code> file</td></tr>
-          <tr><td>TCC / privacy grants</td><td>macOS</td><td>Nothing</td><td><code>.audit</code> file, or EDR</td></tr>
-          <tr><td>SIP (System Integrity Protection) status</td><td>macOS</td><td>Nothing as a plugin</td><td>CIS macOS <code>.audit</code> file</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div id="s-gp-sev">
-      <h2 class="sec">Neighbours that are not INFO</h2>
-      <p class="dek" style="margin-bottom:14px">These sit right beside the plugins above and will change how a
-        finding is triaged and ticketed. Do not fold them into an Info-only dashboard by accident.</p>
-      <div class="tblwrap">
-        <table>
-          <thead><tr><th class="num">ID</th><th style="min-width:230px">Name</th><th>Severity</th><th style="min-width:200px">Why it matters here</th></tr></thead>
-          <tbody>
-            <tr><td class="num">59275</td><td>Malicious Process Detection</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>The parent of the Info-severity Authenticode sub-plugins. A hit is an incident, not enumeration.</td></tr>
-            <tr><td class="num">64687</td><td>Malicious Process Detection: APT1 Software Running</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Same family, same treatment.</td></tr>
-            <tr><td class="num">64788</td><td>Malicious Process Detection: Malware Signed By Stolen Bit9 Certificate</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Same family.</td></tr>
-            <tr><td class="num">65548</td><td>Malicious Process Detection: User Defined Malware Running</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Fires on your own hash list &mdash; the useful half of the Malware Scan template.</td></tr>
-            <tr><td class="num">104855</td><td>Malicious Process Detection: Authenticode With Invalid Signature</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Its siblings (104856, 104857, 105045, 108411) are Info; this one is not.</td></tr>
-            <tr><td class="num">71261</td><td>Linux Malicious Process Detection</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Hash-matched Linux processes.</td></tr>
-            <tr><td class="num">91223</td><td>Malicious Process Detection: User Defined Malware Running (Linux)</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Your hash list, Linux side.</td></tr>
-            <tr><td class="num">56568</td><td>Mac OS X XProtect Installed</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Fires when XProtect is installed but updates are disabled or definitions are stale.</td></tr>
-            <tr><td class="num">33850</td><td>Unix Operating System Unsupported Version Detection</td><td><span class="st"><b style="color:var(--crit)">Critical</b></span></td><td>Unix only &mdash; it does not cover macOS.</td></tr>
-            <tr><td class="num">103569</td><td>Windows Defender Antimalware/Antivirus Signature Definition Check</td><td><span class="st"><b style="color:var(--crit)">High</b></span></td><td>The only real Defender <i>status</i> plugin. 131023 and 112279 are presence-only.</td></tr>
-            <tr><td class="num">10907</td><td>Microsoft Windows Guest Account Belongs to a Group</td><td><span class="st"><b style="color:var(--crit)">High</b></span></td><td>Sits in the middle of the Info user-management block.</td></tr>
-            <tr><td class="num">56211</td><td>SMB Use Host SID to Enumerate Local Users Without Credentials</td><td><span class="st"><b style="color:var(--warn)">Medium</b></span></td><td>The uncredentialed twin of 10860.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="note crit" id="s-gp-dep">
-      <b>Deprecated &mdash; do not build on it.</b> Plugin <b>12634</b> &ldquo;Authenticated Check: OS Name and
-      Installed Package Enumeration&rdquo; still appears in Tenable's own Useful Plugins guide and in older
-      runbooks, but its plugin page now returns <i>deprecated and no longer functional</i>. Use <b>97993</b>
-      (OS Identification and Installed Software Enumeration over SSH v2) instead. Plugin 83991's dependency
-      chain still references 12634 &mdash; that reference is stale.
-    </div>
-  </div>
-</section>
-
-<!-- ================= SETUP ================= -->
-<section class="panel" id="p-setup" role="tabpanel" hidden>
-  <div class="stack">
-    <div class="phead" id="s-su-intro">
-      <div class="crumbs"><span>Running it</span><span class="sl">&rsaquo;</span><b>Scan setup</b></div>
-      <h2>Getting the data out</h2>
-      <p class="dek">The plugins above run in an ordinary credentialed scan. What usually stops teams is not the
-        scan policy &mdash; it is that Info results get trimmed on the way to the dashboard, and that the plugin
-        output column is left out of the export. The payload <i>is</i> the plugin output.</p>
-    </div>
-
-    <div class="grid2" id="s-su-check">
-      <div class="card card-pad">
-        <h3 class="sub" style="margin-bottom:12px">Scan policy checklist</h3>
-        <ol class="chk">
-          <li><div><strong>Give it credentials that can actually read</strong><p>Windows: an account with local
-            admin on the target &mdash; <b>24786</b> fires when the scan ran without admin rights and the
-            enumeration will be partial. Linux/macOS: SSH plus <code>sudo</code> or <code>su</code>;
-            <b>102094</b> lists the exact commands that were refused.</p></div></li>
-          <li><div><strong>Make the Windows transports reachable</strong><p>SMB and the Remote Registry service
-            for the registry-based plugins, DCOM/WMI for the WMI ones. <b>10400</b> and <b>26917</b> tell you
-            about the registry, <b>24269</b> and <b>135860</b> about WMI. Nessus can start the Remote Registry
-            service for the duration of the scan and stop it again afterwards.</p></div></li>
-          <li><div><strong>Do not run a template that trims plugin families</strong><p>The AutoRuns and
-            forensic-artifact blocks live in the <b>Windows</b> family; the credential and patch-assessment
-            plugins live in <b>Settings</b>; hostname, CPE and netstat parsing live in <b>General</b>. Use an
-            Advanced Scan with all families enabled. The <b>Malware Scan</b> template is what you want for the
-            reputation plugins (70767, 70768, 70943) and for your own hash list (65548).</p></div></li>
-          <li><div><strong>Leave thorough tests on</strong><p>Some plugins &mdash; 110231 among them &mdash;
-            only run when thorough tests are enabled.</p></div></li>
-          <li><div><strong>Keep Info severity in the export</strong><p>This is where most of these programmes
-            die. Saved searches, dashboards and export filters routinely exclude <code>info</code>. If Info is
-            filtered, every plugin in this atlas disappears silently.</p></div></li>
-          <li><div><strong>Include the plugin output column</strong><p>Plugin ID and host alone tell you nothing
-            here &mdash; the finding is inside the output text. In Nessus, export CSV with <i>Plugin Output</i>
-            selected. In Tenable Vulnerability Management, add the Plugin Output column in Explore &rarr;
-            Findings, or pull it from the API.</p></div></li>
-          <li><div><strong>Prove collection on every run</strong><p><b>19506</b> (scan settings and whether
-            credentialed checks succeeded), <b>112154</b> (every plugin that actually launched on the host),
-            <b>141118</b> / <b>110095</b> (credentials valid, no privilege issues), <b>117887</b> (patch
-            assessment available), <b>152742</b> / <b>152743</b> (Unix discovery commands). A host that failed
-            authentication looks exactly like a clean host unless you check these.</p></div></li>
-          <li><div><strong>Baseline, then diff</strong><p>One snapshot of 70621 across 4,000 hosts is a
-            spreadsheet. The same export week over week, diffed, is a detection. Store per plugin ID + host +
-            output hash and alert on new rows.</p></div></li>
-        </ol>
-      </div>
-
-      <div class="stack">
-        <div class="card card-pad">
-          <h3 class="sub" style="margin-bottom:10px">Pulling one plugin's output for the whole fleet</h3>
-          <p class="dek" style="margin-bottom:12px">pyTenable against Tenable Vulnerability Management. Note the
-            explicit <code>severity</code> filter &mdash; without it, an export configured elsewhere in your
-            tenancy may drop Info findings.</p>
-          <div class="term">
-            <div class="term-bar"><span class="lbl">python &middot; pytenable</span><span class="grow"></span><button class="copy">Copy</button></div>
-<pre><i># Every AutoRuns Logon entry across the estate, ready to diff</i>
-<u>from</u> tenable.io <u>import</u> TenableIO
-<u>import</u> csv, hashlib
-
-tio = TenableIO()                      <i># TIO_ACCESS_KEY / TIO_SECRET_KEY</i>
-PLUGINS = [<b>70621</b>, <b>70625</b>, <b>70626</b>, <b>70618</b>, <b>44401</b>]
-
-<u>with</u> open(<b>"autoruns_baseline.csv"</b>, <b>"w"</b>, newline=<b>""</b>) <u>as</u> fh:
-    w = csv.writer(fh)
-    w.writerow([<b>"asset"</b>, <b>"plugin_id"</b>, <b>"first_found"</b>, <b>"output_sha1"</b>, <b>"output"</b>])
-    <u>for</u> f <u>in</u> tio.exports.vulns(severity=[<b>"info"</b>], plugin_id=PLUGINS):
-        out = (f.get(<b>"output"</b>) <u>or</u> <b>""</b>).strip()
-        w.writerow([
-            f[<b>"asset"</b>].get(<b>"hostname"</b>) <u>or</u> f[<b>"asset"</b>][<b>"uuid"</b>],
-            f[<b>"plugin"</b>][<b>"id"</b>],
-            f[<b>"first_found"</b>],
-            hashlib.sha1(out.encode()).hexdigest()[:12],
-            out.replace(<b>"\n"</b>, <b>" | "</b>),
-        ])
-</pre>
-          </div>
-        </div>
-
-        <div class="card card-pad">
-          <h3 class="sub" style="margin-bottom:10px">Where to click instead</h3>
-          <ul class="dek" style="padding-left:20px;margin:0">
-            <li style="margin-bottom:7px"><b>Tenable Vulnerability Management</b> &mdash; Explore &rarr;
-              Findings &rarr; Vulnerabilities, filter <code>Severity = Info</code> and
-              <code>Plugin ID = 70621</code>, then add the Plugin Output column and export.</li>
-            <li style="margin-bottom:7px"><b>Nessus Professional</b> &mdash; open the scan, Vulnerabilities tab,
-              search the plugin name, then Export &rarr; CSV with <i>Plugin Output</i> ticked. Per host, the
-              same data sits under the host's plugin list.</li>
-            <li style="margin-bottom:7px"><b>API, one plugin, one scan</b> &mdash;
-              <code>GET /workbenches/vulnerabilities/{plugin_id}/outputs</code> returns the output grouped by
-              host, which is the fastest way to eyeball a single artefact class.</li>
-            <li><b>Agents</b> &mdash; agent scan results carry almost all of this. The exceptions are the
-              handful of scanner-only plugins (10150 and 237981 among them) that need a network vantage point
-              or run only from a scanner.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="note" id="s-su-vol">
-      <b>A word on volume.</b> Turning these on across a large estate produces a very large number
-      of Info findings &mdash; the forensic block alone can add dozens per host, and 70624 returns a CSV
-      report per host. Pick the plugin sets from the playbooks you will actually run, schedule them on their
-      own scan policy, and export by plugin ID rather than dumping every Info finding into a SIEM.
-    </div>
-  </div>
-</section>
 
 
 </main>
@@ -1288,8 +1293,6 @@ PLUGINS = [<b>70621</b>, <b>70625</b>, <b>70626</b>, <b>70618</b>, <b>44401</b>]
   </div></div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 /* ============================ categories ============================ */
 const CATS = {
@@ -2483,7 +2486,7 @@ o:`The following processes are listening :
 
 P({id:121029,n:"MacOS Process Code Signing: Misc",f:"Misc.",p:"mac",c:"proc",a:1,k:1,
 r:"Running processes whose code signature failed verification, with the reason.",
-h:"With no macOS process-listing plugin, this is the closest thing to process visibility — and it is pre-filtered to the interesting case. &ldquo;Not signed at all&rdquo; on a binary under a user's Library directory is about as clear as a scanner-derived macOS signal gets.",
+h:"Pre-filtered to the interesting case: processes whose signature could not be verified for a non-critical reason. Read it alongside 110483 (the full macOS process list) and 121033 (unsigned) — &ldquo;not signed at all&rdquo; on a binary under a user's Library directory is about as clear as a scanner-derived macOS signal gets.",
 t:["T1553.001","T1036"],
 o:`The following processes failed code signature verification :
 
@@ -2495,16 +2498,23 @@ o:`The following processes failed code signature verification :
       code has no resources but signature indicates they must be present`});
 
 P({id:95929,n:"macOS and Mac OS X User List Enumeration",f:"MacOS X Local Security Checks",p:"mac",c:"acct",a:1,k:1,
-r:"Membership of the <code>admin</code> and <code>wheel</code> groups — not a full local user dump.",
-h:"Know the limit before you rely on it: this returns privileged group membership, not every account. That still answers the most important question — who has administrative rights on this Mac — and a hidden or underscore-prefixed account in <code>admin</code> is a finding.",
-t:["T1069.001","T1078.003"],
-o:`Members of group 'admin' :
-  dmartin
-  localadmin
-  <b>_svcdeploy</b>
+r:"Every local user and service account with UID, shell, home directory, real name, GUID, SMB SID, password metadata and full group membership.",
+h:"This is <b>full</b> local account enumeration, and Tenable's own published description understates it — that text reads like plugin 60019 (admin and wheel only), which is a different, older plugin. The script runs unfiltered <code>dscl . -readall /Users</code> and <code>-readall /Groups</code>, splits the output into user accounts and underscore-prefixed service accounts, and publishes the full user list as a KB item that the per-user browser-extension plugins depend on. Read it as the macOS equivalent of 10860 plus 71246.",
+t:["T1069.001","T1078.003","T1087.001"],
+o:`----------[ User Accounts ]----------
 
-Members of group 'wheel' :
-  root`});
+  RecordName    UID   Shell            Home                    Groups
+  dmartin       501   /bin/zsh         /Users/dmartin          staff, admin
+  localadmin    502   /bin/zsh         /Users/localadmin       staff, admin
+  <b>svc.deploy    503   /bin/bash        /Users/svc.deploy       staff, admin, wheel</b>
+
+----------[ Service Accounts ]----------
+
+  _spotlight    89    /usr/bin/false   /var/empty
+  _windowserver 88    /usr/bin/false   /var/empty
+  <b>_updater      599   /bin/sh          /Users/Shared/.updater  admin</b>
+  <i>&lt;-- an underscore-prefixed account with a real shell, a real home and admin rights</i>`,
+v:"Grep the output for a non-service account with UID 0, for anything in <code>admin</code> or <code>wheel</code> you cannot name, and for underscore-prefixed accounts that have a real shell."});
 
 P({id:133180,n:"Google Chrome Browser Extension Enumeration (macOS)",f:"MacOS X Local Security Checks",p:"mac",c:"soft",a:1,k:1,
 r:"Per-user Chrome extensions: user, extension name, version, last update and install path.",
@@ -2559,9 +2569,6 @@ P({id:56468,n:"Time of Last System Startup",f:"General",p:"mac",c:"config",a:1,k
 r:"Last boot time collected with credentials.",h:"Timeline bound. Macs stay up for weeks, which makes an unexplained reboot more notable than on Windows.",t:["Timeline"]});
 P({id:196906,n:"AI/LLM Software Report",f:"Artificial Intelligence",p:"mac",c:"soft",a:1,k:0,
 r:"AI and LLM software installed. Covers macOS.",h:"Local model runners are disproportionately common on developer Macs; a data-governance question more than a malware one.",t:["T1567"]});
-P({id:56310,n:"Firewall Rule Enumeration",f:"Firewalls",p:"mac",c:"defense",a:1,k:0,
-r:"The host's firewall ruleset, read with credentials. Agent-capable on macOS.",
-h:"macOS application firewall state. Thin compared with the Windows and Linux output, but better than nothing.",t:["T1686"]});
 
 /* ================================================================
    CROSS-PLATFORM · hygiene and identity
@@ -2688,7 +2695,7 @@ r:"Nessus Agent presence via the SMB registry.",h:"Agent coverage map, Windows s
 
 P({id:21156,n:"Windows Compliance Checks",f:"Policy Compliance",p:"all",c:"hygiene",a:1,k:1,
 r:"Runs the Windows audit-file compliance checks; the individual results carry their own pass or fail status.",
-h:"This is the escape hatch for every gap in the coverage table. Audit policy, script-block logging, file ACLs, macOS SIP and Linux systemd units are all reachable through a custom <code>.audit</code> file even though no plugin covers them. The plugin itself is Info; the items it emits are not.",
+h:"This is the escape hatch for every <i>Audit file</i> verdict in the coverage table. Cron jobs, systemd timers, kernel modules, audit policy, PowerShell script-block logging, file ACLs, macOS SIP and the macOS firewall are all reachable through a custom or CIS <code>.audit</code> file even though no plugin covers them. The plugin itself is Info; the items it emits carry their own pass or fail.",
 t:["Extension point"]});
 P({id:24760,n:"Windows File Contents Compliance Checks",f:"Policy Compliance",p:"all",c:"hygiene",a:1,k:0,
 r:"File-content compliance checks against an audit file.",
@@ -2738,27 +2745,203 @@ h:"The method that succeeded tells you something about the host's filtering post
 
 /* ============================ coverage matrix ============================ */
 const MATRIX = [
-  ["Autostart / persistence locations","full","none","none","AutoRuns 70613&ndash;70630 on Windows. No Linux or macOS equivalent exists."],
-  ["Scheduled / recurring tasks","part","none","none","Windows only via 70625; cron, at, systemd timers and launchd are uncovered."],
-  ["Running process list","full","full","none","70329/70331 and 110483. 110483 is Unix-scoped and skips macOS."],
-  ["Process signing &amp; reputation","full","none","part","Authenticode set plus 70767/70768/70943; macOS has 121029 only."],
-  ["Listening ports mapped to process","full","full","full","34252, 25221, 99265 &mdash; the one class covered everywhere."],
-  ["Live network connections","full","full","full","64582, 58651 and 174736 all cover all three platforms."],
-  ["Execution evidence (cache / prefetch)","full","none","none","ShimCache, Prefetch, UserAssist, MUICache. Windows only."],
-  ["File &amp; folder user activity","full","none","none","The 92413&ndash;92439 block. No counterpart elsewhere."],
-  ["Local accounts &amp; groups","full","full","part","71246 and 95928 are complete; 95929 returns admin and wheel only."],
-  ["Logon &amp; session artifacts","full","none","none","161502, 92375, 38689, 11457. No Linux wtmp or macOS equivalent."],
-  ["Software inventory","full","full","full","20811, 22869/97993, 83991."],
-  ["Browser extensions","full","none","part","96533/96534 on Windows; macOS has Chrome only (133180)."],
-  ["Removable media history","full","part","none","35730 and 63080 give full USB history; Linux has current mounts only."],
-  ["Kernel modules / drivers","full","none","none","204960 on Windows. No lsmod and no kext enumeration."],
-  ["DNS cache &amp; hosts file","full","part","none","92371 and 92365 on Windows; Linux partially via 176476."],
-  ["Firewall &amp; host policy state","full","part","part","61797/38687/92362 vs 56310/133964 vs 109279/89924."],
-  ["Shares &amp; remote access exposure","full","none","none","10395/10396/60119. NFS exports have no Info plugin."],
-  ["Unmanaged / unsigned binaries","part","full","part","33851 is the strongest of the three by a wide margin."],
-  ["Scan coverage proof","full","full","full","19506, 112154 and the Target Credential family work everywhere."]
+  ["Autostart / persistence locations","full","part","none",
+   "AutoRuns 70613&ndash;70630 on Windows. On Linux only shell-profile persistence is reachable, via 333918. macOS has nothing."],
+  ["Scheduled / recurring tasks","part","audit","audit",
+   "Windows only as a plugin, and only via 70625. <b>cron, at, anacron, systemd timers and launchd have no plugin at all</b> — confirmed three ways, the decisive one being <code>plugin_type:local AND script_name:*Schedul*</code> across every family and sensor, which returns 70625 as the only Info result. Reachable with a <code>.audit</code> <code>CMD_EXEC</code> check."],
+  ["Running process list","full","full","full",
+   "70329 and 70331 on Windows; 110483 on Linux <i>and</i> macOS — its source whitelists <code>Darwin Kernel Version</code> despite the Unix/Linux name."],
+  ["Process signing &amp; reputation","full","part","full",
+   "Authenticode set plus 70767/70768/70943 on Windows. 121029 and 121032&ndash;121034 partition every macOS process, with 71264 for novelty. Linux has 33851 and 44657 rather than signature checks."],
+  ["Listening ports mapped to process","full","full","full",
+   "34252, 25221 and 99265. The one artifact class covered everywhere."],
+  ["Live network connections","full","full","full",
+   "64582, 58651 and 174736 all cover all three platforms."],
+  ["Execution evidence (cache / prefetch)","full","none","none",
+   "ShimCache (92415), Prefetch (77668), UserAssist (92435), MUICache (92424). Windows only, with no equivalent anywhere else."],
+  ["File &amp; folder user activity","full","none","none",
+   "The 92413&ndash;92439 block — ShellBags, OpenSaveMRU, RDP history, Downloads. No counterpart on Linux or macOS."],
+  ["Local accounts &amp; groups","full","full","full",
+   "71246 and 10860 on Windows, 95928 on Linux, 95929 on macOS. <b>95929 is full macOS enumeration</b> — every user and service account with UID, shell, home, GUID and group membership. Tenable's own description text understates it; the admin-and-wheel-only behaviour belongs to 60019."],
+  ["Logon &amp; session artifacts","full","none","none",
+   "161502, 92375, 38689 and 11457 on Windows. There is no Linux wtmp/lastlog plugin and no macOS equivalent."],
+  ["Software inventory","full","full","full",
+   "20811 and 13855 on Windows; 22869 and 97993 on Linux; 83991 and 232590 on macOS."],
+  ["Browser &amp; IDE extensions","full","part","part",
+   "Windows covers browsers and IDEs. Linux has IDE and AI-CLI extensions only (322367, 322208, 315332, 315336, 315341) and no browser plugin. macOS covers Chrome, Brave, Atlas, Comet and IDEs — but not Safari or Firefox."],
+  ["Removable media history","full","part","part",
+   "35730 gives USB vendor, product and serial with first and last connection times on Windows. Linux shows current mounts only (157358). macOS has iOS device backups (58501) and nothing else."],
+  ["Kernel modules / drivers","full","audit","audit",
+   "204960 on Windows. No plugin runs <code>lsmod</code>, <code>kextstat</code> or <code>kmutil</code> — reachable with a <code>.audit</code> <code>CMD_EXEC</code> check."],
+  ["DNS cache &amp; hosts file","full","audit","audit",
+   "92371 and 92365 on Windows. Nothing on Linux or macOS; a <code>.audit</code> <code>FILE_CONTENT_CHECK</code> will read <code>/etc/hosts</code>. Do not mistake 73980 for this — it is a scan setting, not host data."],
+  ["Firewall rule enumeration","full","full","audit",
+   "61797 on Windows, 56310 on Linux (iptables). 56310 is a reporter with iptables and netsh parsing only, and nothing populates it on macOS — firewall <i>state</i> there is a CIS audit item."],
+  ["Audit &amp; logging configuration","audit","audit","audit",
+   "No plugin on any platform. <code>AUDIT_POLICY_SUBCATEGORY</code> shells <code>auditpol /get /category:*</code> over WMI; PowerShell script-block and module logging are <code>REGISTRY_SETTING</code> checks; Linux auditd config is a file check. 92367 covers the PowerShell execution <i>policy</i> only."],
+  ["File &amp; folder permissions","part","audit","audit",
+   "60119 (share ACEs) and 160576 (service registry keys) on Windows; nothing enumerates arbitrary paths. The <code>FILE_PERMISSIONS</code> audit type compares one named path against an expected ACL rather than enumerating."],
+  ["Host security posture","full","part","part",
+   "38687, 92362, 159817 and 16193 on Windows; 133964 (SELinux) on Linux; 109279, 89924 and 56567 (FileVault, Gatekeeper, XProtect) on macOS. SIP and TCC are audit-file only."],
+  ["Shares &amp; remote access exposure","full","part","none",
+   "10395, 10396 and 60119 on Windows. Linux has 10437, but it is an uncredentialed showmount query rather than a read of <code>/etc/exports</code>, and nothing parses <code>smb.conf</code>."],
+  ["Unmanaged / unsigned binaries","part","full","full",
+   "33851 (daemons no package owns) and 44657 (daemons running from deleted binaries) make Linux the strongest here. macOS gets there through the code-signing set; Windows only through reputation."],
+  ["Environment, PATH &amp; timeline","full","full","part",
+   "92364, 92369 and 92366 on Windows; 333918, 168980, 193143 and 56468 on Linux. macOS has boot time only."],
+  ["Scan coverage proof","full","full","full",
+   "19506, 112154, 141118, 110385 and 24786. Works everywhere, and nothing above means anything without it."]
 ];
 
+
+/* ===================== 2026-09-27 re-audit additions =====================
+ * Verified against tenable.com/plugins/api/v1 and the full family listings.
+ * ======================================================================== */
+
+/* ---------- macOS: processes (the big correction) ---------- */
+P({id:110483,n:"Unix / Linux Running Processes Information",f:"General",p:"mac",c:"proc",a:1,k:1,
+r:"The full <code>/bin/ps auxww</code> process table. The name says Unix/Linux, but Darwin is explicitly supported.",
+h:"This is the macOS process list, and its name is why almost everyone concludes macOS has none. The plugin exits only when the host is not Linux, FreeBSD, <b>Darwin</b>, AIX or SunOS &mdash; so it runs on a Mac and returns full command lines. Treat it as the macOS equivalent of 70329 on Windows.",
+t:["T1057","T1059.004"],
+v:"Confirmed from the plugin's own source, which whitelists <code>Darwin Kernel Version</code>. Verify on one Mac before you build a hunt on it."});
+
+P({id:121033,n:"MacOS Process Code Signing: Not Signed",f:"Misc.",p:"mac",c:"proc",a:1,k:1,
+r:"Running processes on the Mac that carry no code signature at all.",
+h:"On a managed Mac, unsigned running code is rare enough to read line by line. Most of the list will be your own internal tooling and homebrew binaries &mdash; which is exactly why having the complete list is worth it. Anything under a user's <code>Library</code> or a dot-directory is the finding.",
+t:["T1553.002","T1036"],
+o:`The following processes are not signed :
+
+  /opt/homebrew/bin/node                                       (PID 1042)
+  <b>/Users/dmartin/Library/Application Support/.cache/helperd     (PID 3318)</b>
+  <b>/private/tmp/.up/agent                                        (PID 3402)</b>`});
+
+P({id:121032,n:"MacOS Process Code Signing: Not Apple",f:"Misc.",p:"mac",c:"proc",a:1,k:1,
+r:"Running processes that are signed, but not by Apple.",
+h:"The useful inverse of the signing set: a process using an Apple binary name that appears here rather than in the Apple-signed list is masquerading. Also the fastest way to inventory which third-party developers have code running on your fleet.",
+t:["T1036.005","T1553.002"]});
+
+P({id:121034,n:"MacOS Process Code Signing: Signed",f:"Misc.",p:"mac",c:"proc",a:1,k:0,
+r:"Running processes with a valid signature.",
+h:"The denominator. Together, 121029 and 121032&ndash;121034 partition every running process by signing verdict, which makes them a full process inventory with a judgement attached.",t:["Baseline"]});
+
+P({id:71264,n:"Reputation of macOS Executables: Never seen process(es)",f:"Backdoors",p:"mac",c:"proc",a:0,k:1,
+r:"Running processes absent from the known-good database and unseen in scans for the past year.",
+h:"Novelty detection for macOS, and the closest thing to a behavioural signal the scanner produces on a Mac. Scanner only &mdash; agents do not report it.",
+t:["T1036"]});
+
+/* ---------- macOS: accounts (corrected) ---------- */
+P({id:60019,n:"Mac OS X Admin Group User List",f:"MacOS X Local Security Checks",p:"mac",c:"acct",a:1,k:0,
+r:"Members of the <code>admin</code> and <code>wheel</code> groups &mdash; privileged accounts only.",
+h:"The narrow, privilege-focused companion to 95929. Worth knowing both exist: 95929's published <i>description</i> reads like this plugin's, which is how macOS account coverage gets written off as admin-only when it is not.",
+t:["T1069.001","T1078.003"]});
+
+/* ---------- macOS: software, extensions, media ---------- */
+P({id:153047,n:"Microsoft Visual Studio Code Extensions Installed (macOS)",f:"MacOS X Local Security Checks",p:"mac",c:"soft",a:1,k:1,
+r:"VS Code extensions per user, and the MCP servers each extension has configured (sensitive values redacted).",
+h:"The MCP server list is the part to read. A developer machine wired to an unreviewed MCP server is an outbound data path and a code-execution surface that no software inventory shows, and it is new enough that most policies do not mention it.",
+t:["T1176.001","T1567"]});
+
+P({id:318757,n:"Brave Browser Extension Enumeration (macOS)",f:"Artificial Intelligence",p:"mac",c:"soft",a:1,k:0,
+r:"Brave extensions installed per user on the Mac.",
+h:"Extension coverage on macOS is wider than the Chrome plugin alone. Brave, Atlas and Comet are all covered, and all three are browsers that arrive without IT asking.",t:["T1176.001"]});
+
+P({id:316772,n:"OpenAI ChatGPT Atlas Extension Enumeration (macOS)",f:"Artificial Intelligence",p:"mac",c:"soft",a:1,k:0,
+r:"Extensions installed in the ChatGPT Atlas browser.",
+h:"An AI browser on a corporate Mac is a data-governance question before it is a security one. This plugin tells you it is there and what it is running.",t:["T1176.001","T1567"]});
+
+P({id:316968,n:"Perplexity Comet Extension Enumeration (macOS)",f:"Artificial Intelligence",p:"mac",c:"soft",a:1,k:0,
+r:"Extensions installed in the Perplexity Comet browser.",
+h:"Same reasoning as Atlas. Both belong on the shadow-IT sweep rather than the malware one.",t:["T1176.001","T1567"]});
+
+P({id:324117,n:"JetBrains IntelliJ IDEA Plugins Installed (macOS)",f:"MacOS X Local Security Checks",p:"mac",c:"soft",a:1,k:0,
+r:"IntelliJ IDEA plugins installed on the Mac.",
+h:"IDE plugins execute with the developer's privileges and reach source, credentials and build pipelines. Rarely inventoried anywhere else.",t:["T1176.001"]});
+
+P({id:232590,n:"MacOS X Applications Enumerated Software Report",f:"MacOS X Local Security Checks",p:"mac",c:"soft",a:1,k:0,
+r:"A consolidated software report derived from <code>system_profiler</code> application data.",
+h:"Catches applications that are present as bundles but not as managed packages &mdash; which is how unapproved software usually arrives on a Mac. Read it next to 83991 rather than instead of it.",
+t:["T1518"]});
+
+P({id:58501,n:"iTunes Mobile iOS Device Backup Enumeration (Mac OS X)",f:"MacOS X Local Security Checks",p:"mac",c:"media",a:1,k:1,
+r:"iOS device backups stored on the Mac.",
+h:"The closest macOS gets to removable-media history: a device backup proves a specific phone was attached to this Mac, and the backup itself is a pile of extractable corporate data sitting in a user directory.",
+t:["T1052.001","T1005"]});
+
+P({id:127915,n:"Jamf Installed (macOS)",f:"MacOS X Local Security Checks",p:"mac",c:"defense",a:1,k:1,
+r:"That the Jamf management agent is present on the Mac.",
+h:"Your macOS management coverage map, inverted: Macs that appear in a credentialed scan but not in this plugin's results are unmanaged. It detects the agent binary, not the enrolled profiles &mdash; there is no plugin for those.",
+t:["Coverage gap"]});
+
+P({id:50680,n:"Mac OS X Server Service List",f:"MacOS X Local Security Checks",p:"mac",c:"net",a:0,k:0,
+r:"Enabled services queried from the legacy macOS <i>Server</i> administration daemon.",
+h:"Applies only to macOS Server, which is effectively extinct &mdash; listed so you do not mistake it for a launchd or service inventory on a normal Mac. It is not one.",
+t:["T1046"]});
+
+/* ---------- Linux: configuration and timeline ---------- */
+P({id:333918,n:"Linux Environment Variable Enumeration",f:"General",p:"lnx",c:"config",a:1,k:1,
+r:"Environment variables from <code>/etc/environment</code>, <code>pam_env.conf</code>, <code>/etc/profile.d</code> and per-user shell profiles.",
+h:"The Linux counterpart to 92364, and it reads the per-user profiles as well as the system files &mdash; which is where a hijacked <code>PATH</code>, an injected <code>LD_PRELOAD</code> or a hard-coded proxy or token actually lives.",
+t:["T1574.007","T1546.004"]});
+
+P({id:168980,n:"Enumerate the PATH Variables",f:"General",p:"lnx",c:"config",a:1,k:1,
+r:"The PATH directories configured on the host.",
+h:"Read it with 333918 and with the Medium-severity 172180: a world-writable or relative directory ahead of the system paths hijacks every unqualified command the host runs.",
+t:["T1574.007"]});
+
+P({id:193143,n:"Linux Time Zone Information",f:"General",p:"lnx",c:"config",a:1,k:0,
+r:"The host's configured time zone.",
+h:"The Linux equivalent of 92369, and equally unglamorous: without it you cannot line Linux artifact timestamps up against Windows ones in the same timeline.",
+t:["Timeline"]});
+
+P({id:170170,n:"Enumerate the Network Interface configuration via SSH",f:"General",p:"lnx",c:"net",a:1,k:0,
+r:"The host's network interface configuration.",
+h:"Finds the second interface on a host that should be single-homed &mdash; the bridge between two segments that nobody documented.",
+t:["T1016","T1599"]});
+
+P({id:179200,n:"Enumerate the Network Routing configuration via SSH",f:"General",p:"lnx",c:"net",a:1,k:1,
+r:"The routing table configured on the host.",
+h:"A static route to a network this host has no business reaching is one of the quieter signs of a pivot being set up, and routing is the one thing a compromised host usually has to change to be useful.",
+t:["T1016","T1599"]});
+
+/* ---------- Linux: processes and shares ---------- */
+P({id:44657,n:"Linux Daemons with Broken Links to Executables",f:"Misc.",p:"lnx",c:"proc",a:1,k:1,
+r:"Running daemons whose executable no longer exists on disk, read from <code>/proc</code>.",
+h:"An outstanding and badly underused hunting plugin. Usually it means a package was upgraded and the service was not restarted &mdash; but the other explanation is a process still running from a binary the attacker deleted to cover it, which is exactly how Linux implants are staged. Every line needs an answer, and the list is short.",
+t:["T1070.004","T1036"],
+o:`The following daemons are running from deleted executables :
+
+  PID    Process        Executable
+  1184   httpd          /usr/sbin/httpd (deleted)
+  <b>9911   nodeagent      /usr/local/sbin/nodeagent (deleted)</b>
+  <b>10233  .sshd          /tmp/.X11-unix/.sshd (deleted)</b>
+  <i>&lt;-- a running process whose binary was removed from disk</i>`,
+v:"Cross-reference against 33851: a deleted binary that was also never package-managed is the strongest pair of signals Nessus gives you on Linux."});
+
+P({id:10437,n:"NFS Share Export List",f:"RPC",p:"lnx",c:"share",a:0,k:1,
+r:"The list of NFS shares the host exports, via showmount/RPC.",
+h:"The Linux share inventory does exist &mdash; but note what it is: an <b>uncredentialed remote</b> RPC query, not a credentialed read of <code>/etc/exports</code>. So it shows what the host advertises to the network, which is the attacker's view and arguably the more useful one. Pair it with the non-Info 42256 (world-readable exports) and 11356 (mountable by the scanner).",
+t:["T1135","T1039"]});
+
+P({id:122878,n:"Linux Alternate Patch Detection",f:"General",p:"lnx",c:"soft",a:1,k:0,
+r:"Patch state gathered through alternate means when normal package enumeration is unavailable.",
+h:"Useful for explaining why a host has thin patch data rather than no data, which is the difference between a coverage gap and a clean result.",
+t:["Coverage proof"]});
+
+P({id:322367,n:"Microsoft Visual Studio Code Extensions Installed (Linux)",f:"Artificial Intelligence",p:"lnx",c:"soft",a:1,k:1,
+r:"VS Code extensions per user on the Linux host, plus the MCP servers each one has configured.",
+h:"Linux has no browser-extension plugin, but it does have IDE and AI-CLI extension enumeration &mdash; and on build servers and developer workstations that is the higher-value question. The MCP server list is the outbound path nobody inventories.",
+t:["T1176.001","T1567"]});
+
+P({id:322208,n:"Anysphere Cursor Extensions Installed (Linux / Unix)",f:"Artificial Intelligence",p:"lnx",c:"soft",a:1,k:0,
+r:"Extensions installed in the Cursor IDE on Linux.",
+h:"One of a family that also covers Codex CLI (315332), Gemini CLI (315336) and Qwen Code (315341) on Linux. Together they inventory the AI tooling that arrived on your engineering fleet without a procurement conversation.",
+t:["T1176.001"]});
+
+/* ---------- Windows ---------- */
+P({id:298389,n:"Microsoft Active Directory Certificate Services (ADCS) Configuration (Windows)",f:"Windows",p:"win",c:"ad",a:1,k:1,
+r:"The ADCS server-role configuration on the host.",
+h:"ADCS misconfiguration is one of the most reliable paths to domain admin in a modern estate, and this plugin is new &mdash; published February 2026, so older surveys of the plugin feed will not mention it. It reports the CA role configuration, not the client certificate store.",
+t:["T1649","T1078.002"]});
 /* ==================== ATT&CK Enterprise v19 ====================
  * TACTICS: slug -> [name, id]      TECH: id -> [name, [tactic slugs], detection note]
  * ============================================================== */
@@ -2975,416 +3158,936 @@ const TECH = {
  "10863 returns full X.509 fields per port. A self-signed certificate with an odd subject, or one issued yesterday on a long-lived host, marks something that was newly stood up; certificate details also fingerprint tooling that ships its own cert."],
 "T1588":["Obtain Capabilities",["resdev"],
  "59641 potentially-unwanted software says more about the host's user than about an adversary, but it reliably marks the machines where anything at all gets installed."]
+
+,
+"T1546.004":["Event Triggered Execution: Unix Shell Configuration Modification",["pers","privesc"],
+ "333918 reads per-user shell profiles as well as the system environment files, which is exactly where this technique lives &mdash; an injected command or an <code>LD_PRELOAD</code> in a user's <code>.bashrc</code> or <code>/etc/profile.d</code>. It is the only Linux persistence location Nessus reaches at all."],
+"T1649":["Steal or Forge Authentication Certificates",["credacc"],
+ "298389 reports the ADCS role configuration, which is where certificate-based domain escalation starts. Read it with 69237 (trusts) and 71246 (who is privileged) &mdash; a permissive certificate template plus a broad enrolment group is the whole attack."]
 };
 
-/* ============================ render ============================ */
-const SHORT = { persist:"Persistence", exec:"Execution evidence", activity:"File activity",
-  proc:"Processes", net:"Network", acct:"Accounts", logon:"Logon artifacts", share:"Shares & SMB",
-  media:"Removable media", defense:"Defensive controls", ad:"Active Directory", soft:"Software",
-  config:"Host config", ident:"Identity", hygiene:"Scan hygiene" };
-const CORDER = Object.keys(CATS);
-const PANELS = ["win","lnx","mac","all"];
-const ICON = {
-  full:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.4l3.2 3.2L13 4.8"/></svg>',
-  part:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5.6"/><path d="M8 2.4A5.6 5.6 0 018 13.6z" fill="currentColor" stroke="none"/></svg>',
-  none:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.4 4.4l7.2 7.2M11.6 4.4l-7.2 7.2"/></svg>'
+/* =====================================================================
+   Threat Hunter's Nessus Handbook — runtime
+   No external scripts. No framework. Everything below is self-contained.
+   ===================================================================== */
+(function () {
+'use strict';
+
+/* ------------------------------ helpers ------------------------------ */
+var $  = function (s, r) { return (r || document).querySelector(s); };
+var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function on(type, sel, fn, root) {
+  (root || document).addEventListener(type, function (e) {
+    var t = e.target && e.target.closest ? e.target.closest(sel) : null;
+    if (t) fn(e, t);
+  });
+}
+function esc(x) {
+  return String(x == null ? '' : x).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+  });
+}
+function setText(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+function debounce(fn, ms) {
+  var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); };
+}
+
+/* ------------------------------ model -------------------------------- */
+var CORDER  = Object.keys(CATS);
+var PANELS  = ['win', 'lnx', 'mac', 'all'];
+var PLAT    = { win: 'Windows', lnx: 'Linux / Unix', mac: 'macOS', all: 'Cross-platform' };
+var SHORT   = { persist:'Persistence', exec:'Execution evidence', activity:'File activity',
+                proc:'Processes', net:'Network', acct:'Accounts', logon:'Logon artifacts',
+                share:'Shares & SMB', media:'Removable media', defense:'Defensive controls',
+                ad:'Active Directory', soft:'Software', config:'Host config', ident:'Identity',
+                hygiene:'Scan hygiene' };
+
+D.forEach(function (d, i) { d._i = i; });
+
+/* technique -> contributing plugins */
+var TIDX = {};
+Object.keys(TECH).forEach(function (t) { TIDX[t] = []; });
+D.forEach(function (d) {
+  (d.t || []).forEach(function (t) { if (TIDX[t]) TIDX[t].push(d); });
+});
+Object.keys(TIDX).forEach(function (t) {
+  TIDX[t].sort(function (a, b) { return (b.k | 0) - (a.k | 0) || a.id - b.id; });
+});
+var TLIST = Object.keys(TECH).filter(function (t) { return TIDX[t].length; })
+  .sort(function (a, b) { return TIDX[b].length - TIDX[a].length || a.localeCompare(b); });
+
+/* tactic -> techniques */
+var tacTech = {}, tacPlugins = {};
+Object.keys(TACTICS).forEach(function (k) { tacTech[k] = []; });
+TLIST.forEach(function (t) {
+  TECH[t][1].forEach(function (k) { if (tacTech[k]) tacTech[k].push(t); });
+});
+var TACORDER = Object.keys(TACTICS).filter(function (k) { return tacTech[k].length; });
+TACORDER.forEach(function (k) {
+  tacTech[k].sort(function (a, b) { return TIDX[b].length - TIDX[a].length || a.localeCompare(b); });
+  var s = {}; tacTech[k].forEach(function (t) { TIDX[t].forEach(function (d) { s[d.id] = 1; }); });
+  tacPlugins[k] = Object.keys(s).length;
+});
+
+/* categories present per panel */
+var CATS_BY_PANEL = {};
+PANELS.forEach(function (pl) {
+  var set = D.filter(function (d) { return d.p === pl; });
+  CATS_BY_PANEL[pl] = CORDER.filter(function (c) {
+    return set.some(function (d) { return d.c === c; });
+  }).map(function (c) {
+    return { c: c, n: set.filter(function (d) { return d.c === c; }).length };
+  });
+});
+
+/* ------------------------------ icons -------------------------------- */
+var ICON = {
+  full : '<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.4l3.2 3.2L13 4.8"/></svg>',
+  part : '<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5.6"/><path d="M8 2.4A5.6 5.6 0 018 13.6z" fill="currentColor" stroke="none"/></svg>',
+  audit: '<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 2.2h5.2L12.4 5.4v8.4H4z"/><path d="M9 2.4v3.2h3.2M6 8.6h4.2M6 11h3"/></svg>',
+  none : '<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.4 4.4l7.2 7.2M11.6 4.4l-7.2 7.2"/></svg>'
 };
-const STLAB = {full:"Covered", part:"Partial", none:"No plugin"};
-const safeT = t => t.replace(/\./g,'_');
-const shortName = n => n.indexOf(': ') > -1 ? n.slice(n.indexOf(': ') + 2) : n;
+var STLAB = { full: 'Covered', part: 'Partial', audit: 'Audit file', none: 'Nothing' };
+var SEARCHICON = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6.8" cy="6.8" r="4.6"/><path d="M10.3 10.3L14 14"/></svg>';
 
-D.forEach((d,i)=>{ d._i = i; });
-
-const TIDX = {};
-Object.keys(TECH).forEach(t => { TIDX[t] = []; });
-D.forEach(d => (d.t||[]).forEach(t => { if (TIDX[t]) TIDX[t].push(d); }));
-Object.keys(TIDX).forEach(t => TIDX[t].sort((a,b)=>(b.k|0)-(a.k|0) || a.id-b.id));
-const TLIST = Object.keys(TECH).filter(t => TIDX[t].length)
-  .sort((a,b) => TIDX[b].length - TIDX[a].length || a.localeCompare(b));
-
-function sensorTag(d){
+/* ======================= plugin rows + panels ======================== */
+function sensorTag(d) {
   return d.a
     ? '<span class="tag sensor both"><span class="k">sensor</span> agent + scanner</span>'
     : '<span class="tag sensor one"><span class="k">sensor</span> scanner</span>';
 }
-function rowHtml(d, i){
-  const tags = [];
+function pluginRow(d) {
+  var tags = [];
   if (d.k) tags.push('<span class="tag core">core</span>');
   tags.push(sensorTag(d));
-  tags.push('<span class="tag tech">'+d.f+'</span>');
-  const tt = (d.t||[]).map(x => TECH[x]
-      ? '<button class="tt" type="button" data-t="'+x+'" title="'+TECH[x][0].replace(/"/g,'')+'">'+x+'</button>'
-      : '<span class="tt"><span>'+x+'</span></span>').join("");
-  let body = '<div><h5>Hunting value</h5><p>'+d.h+'</p></div>';
-  if (tt) body += '<div><h5>Detects / supports</h5><div class="attck">'+tt+'</div></div>';
+  tags.push('<span class="tag tech">' + esc(d.f) + '</span>');
+
+  var chips = (d.t || []).map(function (x) {
+    return TECH[x]
+      ? '<button class="tt" type="button" data-tech="' + x + '" title="' + esc(TECH[x][0]) + '">' + x + '</button>'
+      : '<span class="tt"><span>' + esc(x) + '</span></span>';
+  }).join('');
+
+  var body = '<div><h5>Hunting value</h5><p>' + d.h + '</p></div>';
+  if (chips) body += '<div><h5>Detects / supports</h5><div class="attck">' + chips + '</div></div>';
   if (d.o) body += '<div><h5>Sample plugin output</h5><div class="term">'
-      + '<div class="term-bar"><span class="lbl">plugin '+d.id+' &middot; output</span><span class="grow"></span>'
-      + '<button class="copy" type="button">Copy</button></div><pre>'+d.o+'</pre></div></div>';
-  if (d.v) body += '<div><h5>Pivot</h5><div class="pivot">'+d.v+'</div></div>';
-  return '<article class="plg" data-i="'+i+'">'
+    + '<div class="term-bar"><span class="lbl">plugin ' + d.id + ' &middot; output</span>'
+    + '<span class="grow"></span><button class="copy" type="button">Copy</button></div>'
+    + '<pre>' + d.o + '</pre></div></div>';
+  if (d.v) body += '<div><h5>Pivot</h5><div class="pivot">' + d.v + '</div></div>';
+
+  return '<article class="plg" id="plg-' + d.p + '-' + d.id + '" data-i="' + d._i + '">'
     + '<div class="plg-head" role="button" tabindex="0" aria-expanded="false">'
-    +   '<div><a class="pid" href="https://www.tenable.com/plugins/nessus/'+d.id+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+d.id+'</a></div>'
-    +   '<div><div class="plg-name">'+d.n+'</div><div class="plg-ret">'+d.r+'</div>'
-    +     '<div class="plg-tags">'+tags.join("")+'</div></div>'
+    +   '<div><a class="pid" href="https://www.tenable.com/plugins/nessus/' + d.id + '"'
+    +     ' target="_blank" rel="noopener">' + d.id + '</a></div>'
+    +   '<div><div class="plg-name">' + esc(d.n) + '</div>'
+    +     '<div class="plg-ret">' + d.r + '</div>'
+    +     '<div class="plg-tags">' + tags.join('') + '</div></div>'
     +   '<div><button class="exp" type="button" tabindex="-1">Detail</button></div>'
     + '</div>'
-    + '<div class="plg-body" hidden>'+body+'</div></article>';
+    + '<div class="plg-body" hidden>' + body + '</div></article>';
 }
 
-const CATS_BY_PANEL = {};
-PANELS.forEach(pl => {
-  const set = D.filter(d => d.p === pl);
-  const cats = CORDER.filter(c => set.some(d => d.c === c));
-  CATS_BY_PANEL[pl] = cats.map(c => ({ c, n: set.filter(d=>d.c===c).length }));
-  let chips = '<button class="fchip" type="button" data-cat="*" aria-pressed="true">All</button>'
-            + '<button class="fchip" type="button" data-cat="core" aria-pressed="false">Core only</button>';
-  cats.forEach(c => { chips += '<button class="fchip" type="button" data-cat="'+c+'" aria-pressed="false">'+SHORT[c]+'</button>'; });
-  $('[data-chips="'+pl+'"]').html(chips);
+PANELS.forEach(function (pl) {
+  var set  = D.filter(function (d) { return d.p === pl; });
+  var cats = CATS_BY_PANEL[pl];
 
-  let html = "";
-  cats.forEach(c => {
-    const rows = set.filter(d => d.c === c);
-    html += '<div class="catblock" data-cat="'+c+'" id="cat-'+pl+'-'+c+'">'
-         +  '<div class="cathead"><h3>'+CATS[c][0]+'</h3><span class="cn">'+rows.length+'</span>'
-         +  '<p>'+CATS[c][1]+'</p></div><div class="plist">'
-         +  rows.map(d => rowHtml(d, d._i)).join("")
-         +  '</div></div>';
-  });
-  html += '<div class="empty" hidden>No plugin matches that filter.</div>';
-  $('[data-list="'+pl+'"]').html(html);
-  $('#c-'+pl).text(set.length);
+  var chips = '<button class="fchip" type="button" data-cat="*" aria-pressed="true">All</button>'
+            + '<button class="fchip" type="button" data-cat="core" aria-pressed="false">Core only</button>'
+            + cats.map(function (x) {
+                return '<button class="fchip" type="button" data-cat="' + x.c + '" aria-pressed="false">'
+                     + esc(SHORT[x.c]) + '</button>';
+              }).join('');
+  var cw = $('[data-chips="' + pl + '"]');
+  if (cw) cw.innerHTML = chips;
+
+  var html = cats.map(function (x) {
+    var rows = set.filter(function (d) { return d.c === x.c; });
+    return '<div class="catblock" data-cat="' + x.c + '" id="cat-' + pl + '-' + x.c + '">'
+      + '<div class="cathead"><h3>' + CATS[x.c][0] + '</h3>'
+      +   '<span class="cn">' + rows.length + '</span><p>' + CATS[x.c][1] + '</p></div>'
+      + '<div class="plist">' + rows.map(pluginRow).join('') + '</div></div>';
+  }).join('') + '<div class="empty" hidden>No plugin matches that filter.</div>';
+
+  var lw = $('[data-list="' + pl + '"]');
+  if (lw) lw.innerHTML = html;
+  setText('c-' + pl, set.length);
 });
 
-$('#t-all').text(D.length);
-$('#t-win').text(D.filter(d=>d.p==="win").length);
-$('#t-lnx').text(D.filter(d=>d.p==="lnx").length);
-$('#t-mac').text(D.filter(d=>d.p==="mac").length);
-$('#t-core').text(D.filter(d=>d.k).length);
-$('#t-tech').text(TLIST.length);
-$('#c-tech').text(TLIST.length);
+/* --------------------------- header numbers -------------------------- */
+setText('t-all',  D.length);
+setText('tb-count', D.length);
+setText('t-win',  D.filter(function (d) { return d.p === 'win'; }).length);
+setText('t-lnx',  D.filter(function (d) { return d.p === 'lnx'; }).length);
+setText('t-mac',  D.filter(function (d) { return d.p === 'mac'; }).length);
+setText('t-core', D.filter(function (d) { return d.k; }).length);
+setText('t-tech', TLIST.length);
+setText('c-tech', TLIST.length);
+setText('t-out',  D.filter(function (d) { return d.o; }).length);
 
-$('#matrix').html(MATRIX.map(r =>
-  '<tr><td><b>'+r[0]+'</b></td>'
-  + [1,2,3].map(i => '<td><span class="st '+r[i]+'">'+ICON[r[i]]+STLAB[r[i]]+'</span></td>').join("")
-  + '<td style="color:var(--ink-3)">'+r[4]+'</td></tr>').join(""));
+/* ==================== coverage matrix (the table) ==================== */
+(function () {
+  var body = $('#matrix');
+  if (!body) return;
+  body.innerHTML = MATRIX.map(function (r) {
+    return '<tr><td class="mq"><b>' + r[0] + '</b><span class="mn">' + r[4] + '</span></td>'
+      + [1, 2, 3].map(function (i) {
+          var p = ['', 'Windows', 'Linux', 'macOS'][i];
+          return '<td class="mv" data-p="' + p + '"><span class="st ' + r[i] + '">'
+               + ICON[r[i]] + STLAB[r[i]] + '</span></td>';
+        }).join('')
+      + '</tr>';
+  }).join('');
 
-/* ---------- ATT&CK matrix ---------- */
-function lvl(n){ return n>=9?5 : n>=5?4 : n>=3?3 : n>=2?2 : 1; }
-const tacTech = {}; Object.keys(TACTICS).forEach(k => { tacTech[k] = []; });
-TLIST.forEach(t => TECH[t][1].forEach(k => { if (tacTech[k]) tacTech[k].push(t); }));
-const tacOrder = Object.keys(TACTICS).filter(k => tacTech[k].length);
-tacOrder.forEach(k => tacTech[k].sort((a,b)=>TIDX[b].length-TIDX[a].length || a.localeCompare(b)));
-const tacPlugins = {};
-tacOrder.forEach(k => { const s=new Set(); tacTech[k].forEach(t=>TIDX[t].forEach(d=>s.add(d.id))); tacPlugins[k]=s.size; });
-
-$('#mx').html(tacOrder.map(k =>
-  '<div class="mxcol">'
-  + '<div class="mxhd"><div class="tn">'+TACTICS[k][0]+'</div>'
-  +   '<span class="tid">'+TACTICS[k][1]+'</span>'
-  +   '<span class="tc">'+tacTech[k].length+' technique'+(tacTech[k].length===1?'':'s')+'</span>'
-  +   '<span class="tc" style="margin-top:2px">'+tacPlugins[k]+' plugins</span></div>'
-  + '<div class="mxcells">'
-  + tacTech[k].map(t => '<button class="cell" type="button" data-t="'+t+'" data-tac="'+k+'" data-lvl="'+lvl(TIDX[t].length)+'">'
-      + '<span class="cb">'+TIDX[t].length+'</span>'
-      + '<span class="cn">'+shortName(TECH[t][0])+'</span>'
-      + '<span class="ci">'+t+'</span></button>').join("")
-  + '</div></div>').join(""));
-
-/* ---------- technique cards, grouped by tactic ---------- */
-function techCard(t, tac){
-  const [name, tacs, note] = TECH[t];
-  const pls = TIDX[t];
-  return '<article class="tcard" id="tc-'+tac+'-'+safeT(t)+'" data-t="'+t+'" data-tac="'+tac+'">'
-    + '<div class="tc-hd" role="button" tabindex="0" aria-expanded="false">'
-    +   '<div><span class="tcid">'+t+'</span></div>'
-    +   '<div><h4>'+name+'</h4><div class="tc-tac">'
-    +     tacs.map(k=>'<span class="tacchip">'+TACTICS[k][0]+'</span>').join('')+'</div></div>'
-    +   '<div><span class="tc-n">'+pls.length+' plugin'+(pls.length===1?'':'s')+'</span></div>'
-    + '</div>'
-    + '<div class="tc-bd" hidden>'
-    +   (note ? '<div><h5>How the scan data reveals it</h5><p>'+note+'</p></div>' : '')
-    +   '<div><h5>Contributing plugins</h5><div class="plgchips">'
-    +   pls.map(d => '<a class="pc" href="https://www.tenable.com/plugins/nessus/'+d.id+'" target="_blank" rel="noopener">'
-    +       '<span class="dot '+d.p+'"></span><b>'+d.id+'</b> '+d.n
-    +       (d.k?' <span style="color:var(--lime-2)">&bull;</span>':'')+'</a>').join('')
-    +   '</div></div></div></article>';
-}
-$('#techlist').html(tacOrder.map(k =>
-  '<div class="tacgroup" data-tac="'+k+'" id="tac-'+k+'">'
-  + '<div class="tachead"><h3>'+TACTICS[k][0]+'</h3><span class="tid">'+TACTICS[k][1]+'</span>'
-  +   '<span class="cn">'+tacTech[k].length+' techniques &middot; '+tacPlugins[k]+' plugins</span></div>'
-  + '<div class="stack">'+tacTech[k].map(t => techCard(t,k)).join('')+'</div></div>').join(""));
-
-let tchips = '<button class="fchip" type="button" data-tac="*" aria-pressed="true">All tactics</button>';
-tacOrder.forEach(k => { tchips += '<button class="fchip" type="button" data-tac="'+k+'">'
-  + TACTICS[k][0] + ' <span style="opacity:.62">' + tacTech[k].length + '</span></button>'; });
-$('[data-chips="tech"]').html(tchips);
-
-function applyTechFilter(){
-  const q = ($('#q-tech').val()||'').toLowerCase().trim();
-  const tac = $('[data-chips="tech"] .fchip[aria-pressed="true"]').attr('data-tac') || '*';
-  const seen = {};
-  $('#techlist .tcard').each(function(){
-    const t = $(this).attr('data-t'), myTac = $(this).attr('data-tac');
-    const tacOk = tac === '*' || myTac === tac;
-    const hay = (t+' '+TECH[t][0]+' '+(TECH[t][2]||'')+' '
-      + TECH[t][1].map(k=>TACTICS[k][0]).join(' ')+' '
-      + TIDX[t].map(d=>d.id+' '+d.n).join(' ')).toLowerCase();
-    const ok = tacOk && (!q || hay.indexOf(q) !== -1);
-    this.hidden = !ok; if (ok) seen[t] = 1;
-  });
-  let groups = 0;
-  $('#techlist .tacgroup').each(function(){
-    const vis = $(this).find('.tcard').filter(function(){ return !this.hidden; }).length;
-    this.hidden = vis === 0; if (vis) groups++;
-    $(this).find('.tachead .cn').text(vis + ' shown');
-  });
-  const n = Object.keys(seen).length;
-  $('#techempty')[0].hidden = n > 0;
-  $('[data-count="tech"]').text(n + ' of ' + TLIST.length + ' techniques' + (groups?' · '+groups+' tactics':''));
-}
-$('#q-tech').on('input', applyTechFilter);
-$('[data-chips="tech"]').on('click', '.fchip', function(){
-  $('[data-chips="tech"] .fchip').attr('aria-pressed','false');
-  $(this).attr('aria-pressed','true'); applyTechFilter();
-});
-applyTechFilter();
-
-function openTechnique(t, tac){
-  showTab('attck');
-  $('[data-chips="tech"] .fchip').attr('aria-pressed','false');
-  $('[data-chips="tech"] .fchip[data-tac="*"]').attr('aria-pressed','true');
-  $('#q-tech').val(''); applyTechFilter();
-  let $c = tac ? $('#tc-'+tac+'-'+safeT(t)) : $();
-  if (!$c.length) $c = $('.tcard[data-t="'+t+'"]').first();
-  if (!$c.length) return;
-  $('.tcard').removeClass('hit');
-  $c.addClass('hit');
-  $c.find('.tc-bd')[0].hidden = false;
-  $c.find('.tc-hd').attr('aria-expanded','true');
-  setTimeout(()=>{ $c[0].scrollIntoView({block:'start', behavior:'smooth'}); }, 60);
-}
-$(document).on('click', '.cell', function(){ openTechnique($(this).attr('data-t'), $(this).attr('data-tac')); });
-$(document).on('click', 'button.tt', function(e){ e.stopPropagation(); openTechnique($(this).attr('data-t')); });
-
-/* ---------- accordions ---------- */
-$(document).on('click', '.plg-head', function(){
-  const $a = $(this).closest('.plg'), open = !$a.hasClass('open');
-  $a.toggleClass('open', open);
-  $a.find('.plg-body')[0].hidden = !open;
-  $(this).attr('aria-expanded', open?'true':'false');
-  $a.find('.exp').text(open?'Close':'Detail');
-});
-$(document).on('click', '.tc-hd', function(){
-  const $a = $(this).closest('.tcard'), open = $a.find('.tc-bd')[0].hidden;
-  $a.find('.tc-bd')[0].hidden = !open;
-  $(this).attr('aria-expanded', open?'true':'false');
-});
-$(document).on('keydown', '.plg-head, .tc-hd', function(e){
-  if (e.key==='Enter' || e.key===' ') { e.preventDefault(); $(this).trigger('click'); }
-});
-$(document).on('click', '.copy', function(e){
-  e.stopPropagation();
-  const btn = this, txt = $(btn).closest('.term').find('pre').text();
-  const done = ok => { btn.textContent = ok?'Copied':'Select it'; setTimeout(()=>{btn.textContent='Copy';},1600); };
-  try {
-    navigator.clipboard.writeText(txt).then(()=>done(true), ()=>{
-      const pre = $(btn).closest('.term').find('pre')[0], r = document.createRange();
-      r.selectNodeContents(pre); const s=getSelection(); s.removeAllRanges(); s.addRange(r); done(false);
-    });
-  } catch(err){ done(false); }
-});
-
-/* ---------- on this page ---------- */
-const OTP = {
-  overview:[["s-ov-intro","Overview"],["s-ov-where","Where the data lives"],
-            ["s-ov-plat","Platform coverage"],["s-ov-cap","Capability by platform"],
-            ["s-ov-t1","Tenable One"]],
-  attck:[["s-at-intro","Overview"],["s-at-mx","The matrix"],["s-at-tac","Coverage by tactic"],
-         ["s-at-tech","Techniques"]],
-  play:[["s-pb-intro","Overview"],["s-pb-cards","The seven playbooks"]],
-  gaps:[["s-gp-intro","What Nessus will not give you"],["s-gp-blind","Blind-spot table"],
-        ["s-gp-sev","Non-INFO neighbours"],["s-gp-dep","Deprecated plugins"]],
-  setup:[["s-su-intro","Getting the data out"],["s-su-check","Policy checklist"],
-         ["s-su-vol","A word on volume"]]
-};
-PANELS.forEach(pl => {
-  OTP[pl] = CATS_BY_PANEL[pl].map(x => ['cat-'+pl+'-'+x.c, SHORT[x.c], x.n]);
-});
-tacOrder.forEach(k => OTP.attck.push(['tac-'+k, '  '+TACTICS[k][0], tacTech[k].length]));
-
-let otpItems = [];
-function buildOTP(tab){
-  const list = OTP[tab] || [];
-  $('#otp').html(list.map(x =>
-    '<a href="#'+x[0]+'" data-id="'+x[0]+'">'+x[1]
-    + (x[2]!==undefined ? '<span class="n">'+x[2]+'</span>' : '') + '</a>').join(''));
-  otpItems = list.map(x => x[0]);
-  spy();
-}
-function spy(){
-  if (!otpItems.length) return;
-  let cur = otpItems[0];
-  for (const id of otpItems){
-    const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top <= 150) cur = id;
-  }
-  $('#otp a').each(function(){ $(this).toggleClass('cur', $(this).attr('data-id') === cur); });
-}
-$('#otp').on('click','a',function(e){
-  e.preventDefault();
-  const el = document.getElementById($(this).attr('data-id'));
-  if (el) el.scrollIntoView({block:'start', behavior:'smooth'});
-});
-
-/* ---------- tabs + sticky bar ---------- */
-function showTab(t){
-  $('.snav button').attr('aria-current','false');
-  const $b = $('.snav button[data-tab="'+t+'"]').attr('aria-current','true');
-  $('section.panel').each(function(){ this.hidden = (this.id !== 'p-'+t); });
-  $('#sk-group').text($b.data('group')||'');
-  $('#sk-sec').text($b.find('.lbl').text());
-  buildOTP(t);
-  try { history.replaceState(null,'','#'+t); } catch(e){}
-}
-$('.snav button').on('click', function(){
-  showTab($(this).data('tab'));
-  window.scrollTo({top:0, behavior:'instant'});
-});
-$('#sk-top').on('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
-(function(){
-  const h = (location.hash||'').replace('#','');
-  showTab($('.snav button[data-tab="'+h+'"]').length ? h : 'overview');
+  var tally = { full: 0, part: 0, audit: 0, none: 0 };
+  MATRIX.forEach(function (r) { [1, 2, 3].forEach(function (i) { tally[r[i]]++; }); });
+  var t = $('#mtally');
+  if (t) t.innerHTML = ['full', 'part', 'audit', 'none'].map(function (k) {
+    return '<span class="st ' + k + '">' + ICON[k] + STLAB[k] + ' <b>' + tally[k] + '</b></span>';
+  }).join('');
+  setText('t-cov', MATRIX.length);
 })();
 
-let ticking = false;
-function onScroll(){
-  if (ticking) return; ticking = true;
-  requestAnimationFrame(()=>{
-    $('#sticky').toggleClass('on', window.scrollY > 190);
-    spy(); ticking = false;
-  });
-}
-window.addEventListener('scroll', onScroll, {passive:true});
-onScroll();
+/* ======================== ATT&CK matrix grid ========================= */
+function lvl(n) { return n >= 9 ? 5 : n >= 5 ? 4 : n >= 3 ? 3 : n >= 2 ? 2 : 1; }
+function shortName(n) { var i = n.indexOf(': '); return i > -1 ? n.slice(i + 2) : n; }
 
-/* ---------- plugin filters ---------- */
-function applyFilter(pl){
-  const q = ($('#q-'+pl).val()||'').toLowerCase().trim();
-  const cat = $('[data-chips="'+pl+'"] .fchip[aria-pressed="true"]').attr('data-cat') || '*';
-  let shown = 0;
-  $('[data-list="'+pl+'"] .plg').each(function(){
-    const d = D[+$(this).attr('data-i')];
-    const catOk = cat === '*' || (cat === 'core' ? !!d.k : d.c === cat);
-    const hay = (d.id+' '+d.n+' '+d.f+' '+d.r+' '+d.h+' '+(d.t||[]).join(' ')+' '
-      + (d.t||[]).map(x=>TECH[x]?TECH[x][0]:'').join(' ')+' '+(d.o||'')+' '+CATS[d.c][0]).toLowerCase();
-    const ok = catOk && (!q || hay.indexOf(q) !== -1);
-    this.hidden = !ok; if (ok) shown++;
-  });
-  $('[data-list="'+pl+'"] .catblock').each(function(){
-    this.hidden = $(this).find('.plg').filter(function(){ return !this.hidden; }).length === 0;
-  });
-  $('[data-list="'+pl+'"] .empty')[0].hidden = shown > 0;
-  $('[data-count="'+pl+'"]').text(shown + ' of ' + D.filter(d=>d.p===pl).length + ' shown');
+(function () {
+  var mx = $('#mx');
+  if (!mx) return;
+  mx.innerHTML = TACORDER.map(function (k) {
+    return '<div class="mxcol">'
+      + '<div class="mxhd"><div class="tn">' + TACTICS[k][0] + '</div>'
+      +   '<span class="tid">' + TACTICS[k][1] + '</span>'
+      +   '<span class="tc">' + tacTech[k].length + ' technique' + (tacTech[k].length === 1 ? '' : 's') + '</span>'
+      +   '<span class="tc">' + tacPlugins[k] + ' plugins</span></div>'
+      + '<div class="mxcells">'
+      + tacTech[k].map(function (t) {
+          return '<button class="cell" type="button" data-tech="' + t + '" data-tac="' + k + '"'
+            + ' data-lvl="' + lvl(TIDX[t].length) + '">'
+            + '<span class="cb">' + TIDX[t].length + '</span>'
+            + '<span class="cn">' + esc(shortName(TECH[t][0])) + '</span>'
+            + '<span class="ci">' + t + '</span></button>';
+        }).join('')
+      + '</div></div>';
+  }).join('');
+  setText('t-cells', $$('#mx .cell').length);
+})();
+
+/* ==================== technique cards, by tactic ===================== */
+function safeT(t) { return t.replace(/\./g, '_'); }
+function techCard(t, tac) {
+  var name = TECH[t][0], tacs = TECH[t][1], note = TECH[t][2], pls = TIDX[t];
+  return '<article class="tcard" id="tc-' + tac + '-' + safeT(t) + '" data-tech="' + t + '" data-tac="' + tac + '">'
+    + '<div class="tc-hd" role="button" tabindex="0" aria-expanded="false">'
+    +   '<div><span class="tcid">' + t + '</span></div>'
+    +   '<div><h4>' + esc(name) + '</h4><div class="tc-tac">'
+    +     tacs.map(function (k) { return '<span class="tacchip">' + TACTICS[k][0] + '</span>'; }).join('')
+    +   '</div></div>'
+    +   '<div><span class="tc-n">' + pls.length + ' plugin' + (pls.length === 1 ? '' : 's') + '</span></div>'
+    + '</div>'
+    + '<div class="tc-bd" hidden>'
+    +   (note ? '<div><h5>How the scan data reveals it</h5><p>' + note + '</p></div>' : '')
+    +   '<div><h5>Contributing plugins</h5><div class="plgchips">'
+    +   pls.map(function (d) {
+          return '<a class="pc" href="https://www.tenable.com/plugins/nessus/' + d.id + '"'
+            + ' target="_blank" rel="noopener"><span class="dot ' + d.p + '"></span>'
+            + '<b>' + d.id + '</b> ' + esc(d.n) + (d.k ? ' <span class="core-dot">&bull;</span>' : '') + '</a>';
+        }).join('')
+    +   '</div></div></div></article>';
 }
-PANELS.forEach(pl => {
-  $('#q-'+pl).on('input', ()=>applyFilter(pl));
-  $('[data-chips="'+pl+'"]').on('click', '.fchip', function(){
-    $('[data-chips="'+pl+'"] .fchip').attr('aria-pressed','false');
-    $(this).attr('aria-pressed','true'); applyFilter(pl);
+(function () {
+  var wrap = $('#techlist');
+  if (!wrap) return;
+  wrap.innerHTML = TACORDER.map(function (k) {
+    return '<div class="tacgroup" data-tac="' + k + '" id="tac-' + k + '">'
+      + '<div class="tachead"><h3>' + TACTICS[k][0] + '</h3>'
+      +   '<span class="tid">' + TACTICS[k][1] + '</span>'
+      +   '<span class="cn">' + tacTech[k].length + ' techniques &middot; ' + tacPlugins[k] + ' plugins</span></div>'
+      + '<div class="stack">' + tacTech[k].map(function (t) { return techCard(t, k); }).join('') + '</div></div>';
+  }).join('');
+
+  var tc = $('[data-chips="tech"]');
+  if (tc) tc.innerHTML = '<button class="fchip" type="button" data-tac="*" aria-pressed="true">All tactics</button>'
+    + TACORDER.map(function (k) {
+        return '<button class="fchip" type="button" data-tac="' + k + '" aria-pressed="false">'
+             + TACTICS[k][0] + ' <span class="dim">' + tacTech[k].length + '</span></button>';
+      }).join('');
+})();
+
+/* ========================== accordion rows =========================== */
+function toggleAccordion(head, bodySel, btnSel, openClass) {
+  var card = head.parentElement;
+  var body = $(bodySel, card);
+  if (!body) return;
+  var open = body.hidden;
+  body.hidden = !open;
+  head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (openClass) card.classList.toggle(openClass, open);
+  if (btnSel) { var b = $(btnSel, card); if (b) b.textContent = open ? 'Close' : 'Detail'; }
+}
+on('click', '.plg-head', function (e, t) {
+  if (e.target.closest('a.pid') || e.target.closest('button.tt')) return;
+  toggleAccordion(t, '.plg-body', '.exp', 'open');
+});
+on('click', '.tc-hd', function (e, t) {
+  if (e.target.closest('a')) return;
+  toggleAccordion(t, '.tc-bd', null, null);
+});
+on('keydown', '.plg-head, .tc-hd', function (e, t) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t.click(); }
+});
+
+/* ---------------------------- copy buttons --------------------------- */
+on('click', '.copy', function (e, btn) {
+  e.stopPropagation();
+  var pre = $('pre', btn.closest('.term'));
+  if (!pre) return;
+  var done = function (ok) {
+    btn.textContent = ok ? 'Copied' : 'Select it';
+    setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+  };
+  var fallback = function () {
+    try {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    } catch (err) {}
+    done(false);
+  };
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pre.textContent).then(function () { done(true); }, fallback);
+    } else { fallback(); }
+  } catch (err) { fallback(); }
+});
+
+/* ======================= on-this-page rail =========================== */
+var OTP = {
+  overview: [['s-ov-intro','Overview'],['s-ov-where','Where the data lives'],
+             ['s-ov-plat','Platform coverage'],['s-ov-cap','Coverage map'],['s-ov-t1','Tenable One']],
+  attck:    [['s-at-intro','Overview'],['s-at-mx','The matrix'],['s-at-tac','Coverage by tactic'],
+             ['s-at-tech','Techniques']],
+  play:     [['s-pb-intro','Overview'],['s-pb-cards','The seven playbooks']]
+};
+PANELS.forEach(function (pl) {
+  OTP[pl] = CATS_BY_PANEL[pl].map(function (x) { return ['cat-' + pl + '-' + x.c, SHORT[x.c], x.n]; });
+});
+OTP.all.push(['s-all-sev', 'Not-Info neighbours']);
+OTP.all.push(['s-all-dep', 'Deprecated plugin']);
+TACORDER.forEach(function (k) {
+  OTP.attck.push(['tac-' + k, '  ' + TACTICS[k][0], tacTech[k].length]);
+});
+
+var otpIds = [];
+function buildOTP(tab) {
+  var rail = $('#otp');
+  if (!rail) return;
+  var list = OTP[tab] || [];
+  rail.innerHTML = list.map(function (x) {
+    return '<a href="#' + x[0] + '" data-jump="' + x[0] + '">' + esc(x[1])
+      + (x[2] !== undefined ? '<span class="n">' + x[2] + '</span>' : '') + '</a>';
+  }).join('');
+  otpIds = list.map(function (x) { return x[0]; });
+  spy();
+}
+function spy() {
+  if (!otpIds.length) return;
+  var cur = otpIds[0];
+  for (var i = 0; i < otpIds.length; i++) {
+    var el = document.getElementById(otpIds[i]);
+    if (el && el.getBoundingClientRect().top <= 150) cur = otpIds[i];
+  }
+  $$('#otp a').forEach(function (a) {
+    a.classList.toggle('cur', a.getAttribute('data-jump') === cur);
+  });
+}
+on('click', '#otp a', function (e, a) {
+  e.preventDefault();
+  jumpTo(a.getAttribute('data-jump'));
+});
+function jumpTo(id) {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+
+/* ============================ tab routing ============================ */
+var TABS = $$('.snav button').map(function (b) { return b.getAttribute('data-tab'); });
+function showTab(tab) {
+  if (TABS.indexOf(tab) < 0) tab = 'overview';
+  $$('.snav button').forEach(function (b) {
+    var on_ = b.getAttribute('data-tab') === tab;
+    b.setAttribute('aria-current', on_ ? 'true' : 'false');
+    if (on_) {
+      setText('sk-group', b.getAttribute('data-group') || '');
+      var lbl = $('.lbl', b);
+      setText('sk-sec', lbl ? lbl.textContent : tab);
+    }
+  });
+  $$('section.panel').forEach(function (s) { s.hidden = (s.id !== 'p-' + tab); });
+  buildOTP(tab);
+  /* a chart inside a hidden panel cannot be measured, so draw it when the panel opens */
+  if (typeof drawAllCharts === 'function') drawAllCharts();
+  try { history.replaceState(null, '', '#' + tab); } catch (err) {}
+  return tab;
+}
+on('click', '.snav button', function (e, b) {
+  showTab(b.getAttribute('data-tab'));
+  window.scrollTo({ top: 0, behavior: 'instant' });
+});
+
+/* ======================== sticky bar + top ========================== */
+var ticking = false;
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  window.requestAnimationFrame(function () {
+    var sk = $('#sticky');
+    if (sk) sk.classList.toggle('on', window.scrollY > 190);
+    spy();
+    ticking = false;
+  });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+on('click', '#sk-top', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+/* ========================= plugin filtering ========================== */
+function applyFilter(pl) {
+  var q = (function () { var i = $('#q-' + pl); return i ? i.value.trim().toLowerCase() : ''; })();
+  var chip = $('[data-chips="' + pl + '"] .fchip[aria-pressed="true"]');
+  var cat = chip ? chip.getAttribute('data-cat') : '*';
+  var shown = 0, total = 0;
+
+  $$('[data-list="' + pl + '"] .plg').forEach(function (node) {
+    var d = D[+node.getAttribute('data-i')];
+    total++;
+    var catOk = cat === '*' || (cat === 'core' ? !!d.k : d.c === cat);
+    var hay = (d.id + ' ' + d.n + ' ' + d.f + ' ' + d.r + ' ' + d.h + ' ' + (d.t || []).join(' ') + ' '
+      + (d.t || []).map(function (x) { return TECH[x] ? TECH[x][0] : ''; }).join(' ') + ' '
+      + (d.o || '') + ' ' + CATS[d.c][0]).toLowerCase();
+    var ok = catOk && (!q || hay.indexOf(q) !== -1);
+    node.hidden = !ok;
+    if (ok) shown++;
+  });
+  $$('[data-list="' + pl + '"] .catblock').forEach(function (b) {
+    b.hidden = !$$('.plg', b).some(function (n) { return !n.hidden; });
+  });
+  var empty = $('[data-list="' + pl + '"] .empty');
+  if (empty) empty.hidden = shown > 0;
+  var cnt = $('[data-count="' + pl + '"]');
+  if (cnt) cnt.textContent = shown + ' of ' + total + ' shown';
+}
+PANELS.forEach(function (pl) {
+  var input = $('#q-' + pl);
+  if (input) input.addEventListener('input', function () { applyFilter(pl); });
+  var chips = $('[data-chips="' + pl + '"]');
+  if (chips) chips.addEventListener('click', function (e) {
+    var b = e.target.closest('.fchip');
+    if (!b) return;
+    $$('.fchip', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+    b.setAttribute('aria-pressed', 'true');
+    applyFilter(pl);
   });
   applyFilter(pl);
 });
 
-/* ============================ charts ============================ */
-function tok(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
-const catTotals = CORDER.map(c => ({ label: CATS[c][0], n: D.filter(d=>d.c===c).length }))
-                        .filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
-const byPlat = CORDER.map(c => ({
-  label: CATS[c][0],
-  win: D.filter(d=>d.c===c && d.p==="win").length,
-  lnx: D.filter(d=>d.c===c && d.p==="lnx").length,
-  mac: D.filter(d=>d.c===c && d.p==="mac").length,
-  tot: D.filter(d=>d.c===c && d.p!=="all").length
-})).filter(x=>x.tot>0).sort((a,b)=>b.tot-a.tot).slice(0,9);
-const byTac = tacOrder.map(k => ({ label:TACTICS[k][0], id:TACTICS[k][1],
-  n:tacTech[k].length, p:tacPlugins[k] })).sort((a,b)=>b.n-a.n);
+/* ====================== technique filtering ========================== */
+function applyTechFilter() {
+  var qi = $('#q-tech');
+  var q = qi ? qi.value.trim().toLowerCase() : '';
+  var chip = $('[data-chips="tech"] .fchip[aria-pressed="true"]');
+  var tac = chip ? chip.getAttribute('data-tac') : '*';
+  var seen = {}, groups = 0;
 
-Chart.register({ id:'valueLabels',
-  afterDatasetsDraw(ch,a,opts){
-    if (!opts || !opts.on) return;
-    const cx = ch.ctx; cx.save();
-    cx.font='500 11.5px "IBM Plex Mono", monospace';
-    cx.fillStyle=tok('--p-ink2'); cx.textBaseline='middle'; cx.textAlign='left';
-    ch.data.datasets.forEach((ds,di)=>ch.getDatasetMeta(di).data.forEach((el,i)=>{
-      const v=ds.data[i]; if(!v) return; cx.fillText(String(v), el.x+7, el.y);
-    }));
-    cx.restore();
+  $$('#techlist .tcard').forEach(function (card) {
+    var t = card.getAttribute('data-tech'), myTac = card.getAttribute('data-tac');
+    var tacOk = tac === '*' || myTac === tac;
+    var hay = (t + ' ' + TECH[t][0] + ' ' + (TECH[t][2] || '') + ' '
+      + TECH[t][1].map(function (k) { return TACTICS[k][0]; }).join(' ') + ' '
+      + TIDX[t].map(function (d) { return d.id + ' ' + d.n; }).join(' ')).toLowerCase();
+    var ok = tacOk && (!q || hay.indexOf(q) !== -1);
+    card.hidden = !ok;
+    if (ok) seen[t] = 1;
+  });
+  $$('#techlist .tacgroup').forEach(function (g) {
+    var vis = $$('.tcard', g).filter(function (c) { return !c.hidden; }).length;
+    g.hidden = vis === 0;
+    if (vis) groups++;
+    var cn = $('.tachead .cn', g);
+    if (cn) cn.textContent = vis + ' shown';
+  });
+  var n = Object.keys(seen).length;
+  var none = $('#techempty');
+  if (none) none.hidden = n > 0;
+  var cnt = $('[data-count="tech"]');
+  if (cnt) cnt.textContent = n + ' of ' + TLIST.length + ' techniques'
+    + (groups ? ' · ' + groups + ' tactic' + (groups === 1 ? '' : 's') : '');
+}
+(function () {
+  var qi = $('#q-tech');
+  if (qi) qi.addEventListener('input', applyTechFilter);
+  var chips = $('[data-chips="tech"]');
+  if (chips) chips.addEventListener('click', function (e) {
+    var b = e.target.closest('.fchip');
+    if (!b) return;
+    $$('.fchip', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+    b.setAttribute('aria-pressed', 'true');
+    applyTechFilter();
+  });
+  applyTechFilter();
+})();
+
+/* =================== open one technique, from anywhere =============== */
+function flash(el) {
+  if (!el) return;
+  el.classList.add('flash');
+  setTimeout(function () { el.classList.remove('flash'); }, 2200);
+}
+function openTechnique(t, tac) {
+  showTab('attck');
+  var chips = $('[data-chips="tech"]');
+  if (chips) {
+    $$('.fchip', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+    var all = $('.fchip[data-tac="*"]', chips);
+    if (all) all.setAttribute('aria-pressed', 'true');
   }
+  var qi = $('#q-tech'); if (qi) qi.value = '';
+  applyTechFilter();
+
+  var card = tac ? document.getElementById('tc-' + tac + '-' + safeT(t)) : null;
+  if (!card) card = $('.tcard[data-tech="' + t + '"]');
+  if (!card) return;
+  $$('.tcard.hit').forEach(function (c) { c.classList.remove('hit'); });
+  card.classList.add('hit');
+  var bd = $('.tc-bd', card); if (bd) bd.hidden = false;
+  var hd = $('.tc-hd', card); if (hd) hd.setAttribute('aria-expanded', 'true');
+  setTimeout(function () { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 60);
+}
+function openPlugin(d) {
+  showTab(d.p);
+  var chips = $('[data-chips="' + d.p + '"]');
+  if (chips) {
+    $$('.fchip', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+    var all = $('.fchip[data-cat="*"]', chips);
+    if (all) all.setAttribute('aria-pressed', 'true');
+  }
+  var qi = $('#q-' + d.p); if (qi) qi.value = '';
+  applyFilter(d.p);
+  setTimeout(function () {
+    var node = document.getElementById('plg-' + d.p + '-' + d.id);
+    if (!node) return;
+    var body = $('.plg-body', node);
+    if (body && body.hidden) $('.plg-head', node).click();
+    node.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    flash(node);
+  }, 70);
+}
+on('click', '.cell', function (e, c) {
+  openTechnique(c.getAttribute('data-tech'), c.getAttribute('data-tac'));
 });
-Chart.defaults.font.family = '"IBM Plex Sans", system-ui, sans-serif';
-Chart.defaults.font.size = 12;
+on('click', 'button.tt', function (e, b) {
+  e.stopPropagation();
+  openTechnique(b.getAttribute('data-tech'));
+});
 
-let c1,c2,c3;
-function hbar(el, labels, datasets, labelsOn, tipFmt){
-  return new Chart(document.getElementById(el), {
-    type:'bar', data:{ labels, datasets },
-    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
-      layout:{ padding:{ right:26, left:2 } },
-      plugins:{ legend:{display:false}, valueLabels:{on:labelsOn},
-        tooltip:{ backgroundColor:'#11161a', titleColor:'#fff', bodyColor:tok('--p-ink2'),
-          borderColor:tok('--p-line'), borderWidth:1, padding:9,
-          displayColors:datasets.length>1, callbacks:{ label:tipFmt } } },
-      scales:{
-        x:{ grid:{ color:tok('--p-grid'), drawTicks:false }, border:{display:false},
-            ticks:{ color:tok('--p-ink3'), precision:0 } },
-        y:{ grid:{ display:false }, border:{ color:tok('--p-line') },
-            ticks:{ color:tok('--p-ink2'), font:{size:12, weight:'500'}, autoSkip:false } } } }
+/* =========================== SVG bar charts ==========================
+   Drawn here rather than loaded from a CDN, so a blocked host can never
+   take the page down. Measured at 1:1 pixels and redrawn on resize, so
+   labels stay at their real size instead of scaling with a viewBox.
+   ==================================================================== */
+function niceStep(max, targetTicks) {
+  var raw = max / (targetTicks || 5);
+  var steps = [1, 2, 5, 10, 20, 25, 50, 100, 200, 500];
+  for (var i = 0; i < steps.length; i++) if (steps[i] >= raw) return steps[i];
+  return steps[steps.length - 1];
+}
+function fit(text, px) {
+  var maxChars = Math.max(6, Math.floor(px / 6.75));
+  return text.length <= maxChars ? text : text.slice(0, maxChars - 1) + '…';
+}
+function drawHBar(host, spec) {
+  if (!host) return;
+  var W = Math.max(280, host.clientWidth || 640);
+  var narrow = W < 520;
+  var gutter = Math.round(Math.min(Math.max(W * 0.34, 92), narrow ? 150 : 250));
+  var padR = spec.labelsOn ? 40 : 18;
+  var plotW = Math.max(60, W - gutter - padR);
+  var nser = spec.series.length;
+  var barH = nser > 1 ? (narrow ? 6 : 8) : (narrow ? 11 : 13);
+  var gap = 2;
+  var rowH = nser > 1 ? (nser * (barH + gap) + 16) : (narrow ? 26 : 30);
+  var axisH = 26;
+  var H = spec.rows.length * rowH + axisH;
+
+  var max = 0;
+  spec.rows.forEach(function (r) { r.values.forEach(function (v) { if (v > max) max = v; }); });
+  if (max <= 0) max = 1;
+  var step = niceStep(max, narrow ? 3 : 5);
+  var top = Math.ceil(max / step) * step;
+  var sx = function (v) { return gutter + (v / top) * plotW; };
+
+  var svg = ['<svg class="bars" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H
+    + '" role="img" aria-label="' + esc(spec.title || 'bar chart') + '">'];
+
+  /* gridlines + x ticks */
+  for (var v = 0; v <= top; v += step) {
+    var x = sx(v);
+    svg.push('<line class="grid" x1="' + x.toFixed(1) + '" y1="0" x2="' + x.toFixed(1) + '" y2="'
+      + (H - axisH) + '"/>');
+    svg.push('<text class="tick" x="' + x.toFixed(1) + '" y="' + (H - axisH + 15)
+      + '" text-anchor="middle">' + v + '</text>');
+  }
+  /* baseline */
+  svg.push('<line class="axis" x1="' + gutter + '" y1="0" x2="' + gutter + '" y2="' + (H - axisH) + '"/>');
+
+  spec.rows.forEach(function (r, ri) {
+    var y0 = ri * rowH;
+    var cy = y0 + (rowH - axisH * 0 ) / 2;
+    svg.push('<text class="lab" x="' + (gutter - 10) + '" y="' + (y0 + rowH / 2).toFixed(1)
+      + '" text-anchor="end" dominant-baseline="central">' + esc(fit(r.label, gutter - 14)) + '</text>');
+
+    r.values.forEach(function (val, si) {
+      var w = (val / top) * plotW;
+      var by = nser > 1
+        ? y0 + (rowH - nser * (barH + gap) + gap) / 2 + si * (barH + gap)
+        : y0 + (rowH - barH) / 2;
+      if (val > 0) {
+        svg.push('<rect class="bar s' + (si + 1) + '" x="' + (gutter - 3) + '" y="' + by.toFixed(1)
+          + '" width="' + (w + 3).toFixed(1) + '" height="' + barH + '" rx="3">'
+          + '<title>' + esc(r.label) + ' — ' + esc(spec.series[si].name) + ': ' + val + '</title></rect>');
+      }
+      if (spec.labelsOn && val > 0) {
+        svg.push('<text class="val" x="' + (gutter + w + 7).toFixed(1) + '" y="' + (by + barH / 2).toFixed(1)
+          + '" dominant-baseline="central">' + val + '</text>');
+      }
+    });
+  });
+  svg.push('</svg>');
+  host.innerHTML = svg.join('');
+}
+
+/* ------------------------------ the data ----------------------------- */
+var catTotals = CORDER.map(function (c) {
+  return { label: CATS[c][0], n: D.filter(function (d) { return d.c === c; }).length };
+}).filter(function (x) { return x.n > 0; }).sort(function (a, b) { return b.n - a.n; });
+
+var byPlat = CORDER.map(function (c) {
+  var f = function (p) { return D.filter(function (d) { return d.c === c && d.p === p; }).length; };
+  return { label: CATS[c][0], win: f('win'), lnx: f('lnx'), mac: f('mac'),
+           tot: f('win') + f('lnx') + f('mac') };
+}).filter(function (x) { return x.tot > 0; }).sort(function (a, b) { return b.tot - a.tot; }).slice(0, 9);
+
+var byTac = TACORDER.map(function (k) {
+  return { label: TACTICS[k][0], id: TACTICS[k][1], n: tacTech[k].length, p: tacPlugins[k] };
+}).sort(function (a, b) { return b.n - a.n; });
+
+var CHARTS = [
+  { host: '#chart1',
+    spec: { title: 'Plugins by hunting question', labelsOn: true,
+            series: [{ name: 'Plugins' }],
+            rows: catTotals.map(function (x) { return { label: x.label, values: [x.n] }; }) } },
+  { host: '#chart2',
+    spec: { title: 'Plugins by hunting question and platform', labelsOn: false,
+            series: [{ name: 'Windows' }, { name: 'Linux / Unix' }, { name: 'macOS' }],
+            rows: byPlat.map(function (x) { return { label: x.label, values: [x.win, x.lnx, x.mac] }; }) } },
+  { host: '#chart3',
+    spec: { title: 'Techniques by ATT&CK tactic', labelsOn: true,
+            series: [{ name: 'Techniques' }],
+            rows: byTac.map(function (x) { return { label: x.label, values: [x.n] }; }) } }
+];
+function drawAllCharts() {
+  CHARTS.forEach(function (c) {
+    var host = $(c.host);
+    if (host && !host.closest('[hidden]')) drawHBar(host, c.spec);
   });
 }
-function drawCharts(){
-  const s1=tok('--s1'), s2=tok('--s2'), s3=tok('--s3');
-  if(c1)c1.destroy(); if(c2)c2.destroy(); if(c3)c3.destroy();
-  c1 = hbar('chart1', catTotals.map(x=>x.label),
-    [{ data:catTotals.map(x=>x.n), backgroundColor:s1, borderRadius:{topRight:4,bottomRight:4},
-       borderSkipped:false, barThickness:13 }],
-    true, c => c.parsed.x + ' plugin' + (c.parsed.x===1?'':'s'));
-  c2 = hbar('chart2', byPlat.map(x=>x.label),
-    [{ label:'Windows', data:byPlat.map(x=>x.win), backgroundColor:s1, barThickness:9, borderRadius:{topRight:3,bottomRight:3}, borderSkipped:false },
-     { label:'Linux / Unix', data:byPlat.map(x=>x.lnx), backgroundColor:s2, barThickness:9, borderRadius:{topRight:3,bottomRight:3}, borderSkipped:false },
-     { label:'macOS', data:byPlat.map(x=>x.mac), backgroundColor:s3, barThickness:9, borderRadius:{topRight:3,bottomRight:3}, borderSkipped:false }],
-    false, c => c.dataset.label + ': ' + c.parsed.x + ' plugin' + (c.parsed.x===1?'':'s'));
-  c3 = hbar('chart3', byTac.map(x=>x.label),
-    [{ data:byTac.map(x=>x.n), backgroundColor:s1, borderRadius:{topRight:4,bottomRight:4},
-       borderSkipped:false, barThickness:13 }],
-    true, c => byTac[c.dataIndex].n + ' techniques, ' + byTac[c.dataIndex].p + ' plugins');
-}
-drawCharts();
 
-$('#tbl1').html('<table><thead><tr><th>Hunting question</th><th class="num">Plugins</th></tr></thead><tbody>'
-  + catTotals.map(x=>'<tr><td>'+x.label+'</td><td class="num">'+x.n+'</td></tr>').join('')+'</tbody></table>');
-$('#tbl2').html('<table><thead><tr><th>Hunting question</th><th class="num">Windows</th><th class="num">Linux / Unix</th><th class="num">macOS</th></tr></thead><tbody>'
-  + byPlat.map(x=>'<tr><td>'+x.label+'</td><td class="num">'+x.win+'</td><td class="num">'+x.lnx+'</td><td class="num">'+x.mac+'</td></tr>').join('')+'</tbody></table>');
-$('#tbl3').html('<table><thead><tr><th>Tactic</th><th>ID</th><th class="num">Techniques</th><th class="num">Plugins</th></tr></thead><tbody>'
-  + byTac.map(x=>'<tr><td>'+x.label+'</td><td class="num">'+x.id+'</td><td class="num">'+x.n+'</td><td class="num">'+x.p+'</td></tr>').join('')+'</tbody></table>');
-function tgl(btn, tbl, box){
-  $(btn).on('click', function(){
-    const on = $(this).attr('aria-pressed') !== 'true';
-    $(this).attr('aria-pressed', on?'true':'false').text(on?'Chart view':'Table view');
-    $(tbl)[0].hidden = !on; $(box)[0].hidden = on;
+/* --------------------------- table views ---------------------------- */
+function tbl(head, rows) {
+  return '<table><thead><tr>' + head.map(function (h, i) {
+      return '<th' + (i ? ' class="num"' : '') + '>' + h + '</th>';
+    }).join('') + '</tr></thead><tbody>'
+    + rows.map(function (r) {
+        return '<tr>' + r.map(function (c, i) {
+          return '<td' + (i ? ' class="num"' : '') + '>' + c + '</td>';
+        }).join('') + '</tr>';
+      }).join('')
+    + '</tbody></table>';
+}
+(function () {
+  var t1 = $('#tbl1'), t2 = $('#tbl2'), t3 = $('#tbl3');
+  if (t1) t1.innerHTML = tbl(['Hunting question', 'Plugins'],
+    catTotals.map(function (x) { return [x.label, x.n]; }));
+  if (t2) t2.innerHTML = tbl(['Hunting question', 'Windows', 'Linux / Unix', 'macOS'],
+    byPlat.map(function (x) { return [x.label, x.win, x.lnx, x.mac]; }));
+  if (t3) t3.innerHTML = tbl(['Tactic', 'ID', 'Techniques', 'Plugins'],
+    byTac.map(function (x) { return [x.label, x.id, x.n, x.p]; }));
+})();
+on('click', '.tglbtn', function (e, btn) {
+  var card = btn.closest('.chartcard');
+  var box = $('.chart-box', card), tb = $('.tblwrap', card);
+  if (!box || !tb) return;
+  var showTable = btn.getAttribute('aria-pressed') !== 'true';
+  btn.setAttribute('aria-pressed', showTable ? 'true' : 'false');
+  btn.textContent = showTable ? 'Chart view' : 'Table view';
+  tb.hidden = !showTable;
+  box.hidden = showTable;
+  if (!showTable) drawAllCharts();
+});
+
+/* --------------------------- theme + resize -------------------------- */
+function isDark() {
+  var a = document.documentElement.getAttribute('data-theme');
+  if (a === 'dark') return true;
+  if (a === 'light') return false;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+window.addEventListener('resize', debounce(drawAllCharts, 160));
+try {
+  new MutationObserver(drawAllCharts)
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+} catch (err) {}
+
+/* ============================ global search ========================== */
+var SECTIONS = [];
+Object.keys(OTP).forEach(function (tab) {
+  var btn = $('.snav button[data-tab="' + tab + '"]');
+  if (!btn) return;
+  var lbl = $('.lbl', btn);
+  var tabLabel = lbl ? lbl.textContent.trim() : tab;
+  var group = btn.getAttribute('data-group') || '';
+  SECTIONS.push({ tab: tab, id: null, label: tabLabel, sub: group });
+  (OTP[tab] || []).forEach(function (x) {
+    SECTIONS.push({ tab: tab, id: x[0], label: String(x[1]).trim(), sub: tabLabel });
+  });
+});
+
+var SIDX = [];
+D.forEach(function (d) {
+  SIDX.push({ kind: 'plugin', d: d, id: String(d.id), name: d.n,
+    sub: PLAT[d.p] + ' · ' + CATS[d.c][0] + ' · ' + d.f,
+    hay: (d.id + ' ' + d.n + ' ' + d.f + ' ' + d.r + ' ' + d.h + ' ' + CATS[d.c][0] + ' ' + PLAT[d.p]
+      + ' ' + (d.t || []).join(' ')
+      + ' ' + (d.t || []).map(function (x) { return TECH[x] ? TECH[x][0] : ''; }).join(' ')
+      + ' ' + (d.o || '')).toLowerCase() });
+});
+TLIST.forEach(function (t) {
+  SIDX.push({ kind: 'technique', t: t, id: t, name: TECH[t][0],
+    sub: TECH[t][1].map(function (k) { return TACTICS[k][0]; }).join(', ')
+       + ' · ' + TIDX[t].length + ' plugins',
+    hay: (t + ' ' + TECH[t][0] + ' ' + (TECH[t][2] || '') + ' '
+      + TECH[t][1].map(function (k) { return TACTICS[k][0]; }).join(' ') + ' '
+      + TIDX[t].map(function (d) { return d.id + ' ' + d.n; }).join(' ')).toLowerCase() });
+});
+/* the coverage map and the blind-spot table answer a lot of searches */
+MATRIX.forEach(function (r) {
+  var plain = String(r[4]).replace(/<[^>]+>/g, '');
+  var verdicts = 'Windows ' + STLAB[r[1]] + ', Linux ' + STLAB[r[2]] + ', macOS ' + STLAB[r[3]];
+  SIDX.push({ kind: 'coverage', id: '', name: String(r[0]).replace(/&amp;/g, '&'),
+    sub: verdicts,
+    hay: (r[0] + ' ' + plain + ' ' + verdicts + ' coverage map capability platform').toLowerCase() });
+});
+SECTIONS.forEach(function (s) {
+  SIDX.push({ kind: 'section', s: s, id: '', name: s.label, sub: s.sub,
+    hay: (s.label + ' ' + s.sub).toLowerCase() });
+});
+
+var KINDLABEL = { plugin: 'Plugins', technique: 'ATT&CK techniques',
+                  coverage: 'Coverage map', section: 'Sections' };
+var KINDWAY = { plugin: 'plugin', technique: 'technique', coverage: 'coverage', section: 'go to' };
+var KORD = { plugin: 0, technique: 1, coverage: 2, section: 3 };
+
+var sHits = [], sCur = 0;
+
+function hl(text, q) {
+  var t = esc(text);
+  if (!q) return t;
+  var needles = [q].concat(q.split(/\s+/).filter(function (x) { return x.length > 1; }));
+  for (var k = 0; k < needles.length; k++) {
+    var i = t.toLowerCase().indexOf(needles[k].toLowerCase());
+    if (i > -1) {
+      return t.slice(0, i) + '<mark>' + t.slice(i, i + needles[k].length) + '</mark>'
+           + t.slice(i + needles[k].length);
+    }
+  }
+  return t;
+}
+function score(it, q, toks) {
+  var n = it.name.toLowerCase(), id = it.id.toLowerCase();
+  if (it.kind === 'plugin' && id === q) return 0;
+  if (id && id === q) return 1;
+  if (id && id.indexOf(q) === 0) return 2;
+  if (n.indexOf(q) === 0) return 3;
+  if (n.indexOf(q) > -1) return 4;
+  if (it.hay.indexOf(q) > -1) return it.kind === 'section' ? 7 : 5;
+  /* multi-word query: every word has to appear somewhere, in any order.
+     Ranked below a contiguous phrase match but above nothing at all. */
+  if (toks.length > 1) {
+    var allInName = toks.every(function (t) { return n.indexOf(t) > -1; });
+    if (allInName) return 4.5;
+    var allInHay = toks.every(function (t) { return it.hay.indexOf(t) > -1; });
+    if (allInHay) return it.kind === 'section' ? 8 : 6;
+  }
+  return -1;
+}
+function weight(it) {
+  if (it.kind === 'plugin') return -(it.d.k | 0);
+  if (it.kind === 'technique') return -TIDX[it.t].length;
+  return 0;
+}
+function itemHtml(it, i, q) {
+  return '<div class="sitem" data-hit="' + i + '" role="option">'
+    + '<span class="sid">' + (it.id ? hl(it.id, q) : '&rsaquo;') + '</span>'
+    + '<span class="sbody"><span class="sname">' + hl(it.name, q) + '</span>'
+    +   '<span class="ssub">' + esc(it.sub || '') + '</span></span>'
+    + '<span class="sway">' + KINDWAY[it.kind] + '</span></div>';
+}
+function markCur() {
+  $$('#sres .sitem').forEach(function (n) {
+    var on_ = +n.getAttribute('data-hit') === sCur;
+    n.classList.toggle('on', on_);
+    if (on_ && n.scrollIntoView) n.scrollIntoView({ block: 'nearest' });
   });
 }
-tgl('#tg1','#tbl1','.chart-box.c1'); tgl('#tg2','#tbl2','.chart-box.c2'); tgl('#tg3','#tbl3','.chart-box.c3');
+function runSearch() {
+  var qi = $('#sq');
+  var q = qi ? qi.value.trim().toLowerCase() : '';
+  var res = $('#sres');
+  if (!res) return;
 
-function isDark(){
-  const a = document.documentElement.getAttribute('data-theme');
-  if (a==='dark') return true; if (a==='light') return false;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (!q) {
+    sHits = SECTIONS.filter(function (s) { return !s.id; }).map(function (s) {
+      return { kind: 'section', s: s, id: '', name: s.label, sub: s.sub };
+    });
+    res.innerHTML = '<div class="sgrp">Jump to</div>'
+      + sHits.map(function (it, i) { return itemHtml(it, i, ''); }).join('');
+    sCur = 0; markCur();
+    setText('scount', D.length + ' plugins · ' + TLIST.length + ' techniques');
+    return;
+  }
+
+  var toks = q.split(/\s+/).filter(function (x) { return x.length > 1; });
+  var scored = [];
+  SIDX.forEach(function (it) {
+    var sc = score(it, q, toks);
+    if (sc >= 0) scored.push([sc, it]);
+  });
+  scored.sort(function (a, b) {
+    return a[0] - b[0] || KORD[a[1].kind] - KORD[b[1].kind]
+      || weight(a[1]) - weight(b[1]) || a[1].name.length - b[1].name.length;
+  });
+  sHits = scored.slice(0, 40).map(function (x) { return x[1]; });
+
+  if (!sHits.length) {
+    res.innerHTML = '<div class="snone">Nothing matches &ldquo;' + esc(q) + '&rdquo;.</div>';
+    setText('scount', '0 results');
+    return;
+  }
+  var html = '', last = '';
+  sHits.forEach(function (it, i) {
+    if (it.kind !== last) { html += '<div class="sgrp">' + KINDLABEL[it.kind] + '</div>'; last = it.kind; }
+    html += itemHtml(it, i, q);
+  });
+  res.innerHTML = html;
+  sCur = 0; markCur();
+  setText('scount', sHits.length + (sHits.length === 40 ? '+' : '') + ' result'
+    + (sHits.length === 1 ? '' : 's'));
 }
-let darkNow = isDark();
-function themeCheck(){ const d=isDark(); if(d!==darkNow){ darkNow=d; drawCharts(); } }
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', themeCheck);
-new MutationObserver(themeCheck).observe(document.documentElement,{attributes:true, attributeFilter:['data-theme']});
+function openHit(it) {
+  closeSearch();
+  if (!it) return;
+  if (it.kind === 'technique') { openTechnique(it.t); return; }
+  if (it.kind === 'plugin')    { openPlugin(it.d); return; }
+  if (it.kind === 'coverage')  { showTab('overview'); setTimeout(function () { jumpTo('s-ov-cap'); }, 60); return; }
+  showTab(it.s.tab);
+  setTimeout(function () {
+    if (it.s.id) jumpTo(it.s.id);
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 60);
+}
+function openSearch() {
+  var scrim = $('#scrim'), box = $('#sbox'), qi = $('#sq');
+  if (!scrim || !box || !qi) return;
+  scrim.hidden = false; box.hidden = false;
+  qi.value = ''; qi.focus();
+  runSearch();
+}
+function closeSearch() {
+  var scrim = $('#scrim'), box = $('#sbox');
+  if (scrim) scrim.hidden = true;
+  if (box) box.hidden = true;
+}
+function searchOpen() { var b = $('#sbox'); return b && !b.hidden; }
+
+on('click', '[data-search]', function () { openSearch(); });
+on('click', '#scrim', function () { closeSearch(); });
+on('click', '#sres .sitem', function (e, n) { openHit(sHits[+n.getAttribute('data-hit')]); });
+on('mousemove', '#sres .sitem', function (e, n) {
+  var i = +n.getAttribute('data-hit');
+  if (i !== sCur) { sCur = i; markCur(); }
+});
+(function () {
+  var qi = $('#sq');
+  if (qi) qi.addEventListener('input', runSearch);
+  var box = $('#sbox');
+  if (box) box.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { e.preventDefault(); closeSearch(); }
+    else if (e.key === 'ArrowDown') {
+      e.preventDefault(); if (sHits.length) { sCur = (sCur + 1) % sHits.length; markCur(); }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault(); if (sHits.length) { sCur = (sCur - 1 + sHits.length) % sHits.length; markCur(); }
+    } else if (e.key === 'Enter') { e.preventDefault(); openHit(sHits[sCur]); }
+  });
+})();
+document.addEventListener('keydown', function (e) {
+  var tag = (e.target && e.target.tagName) || '';
+  var inField = /^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable);
+  if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
+    e.preventDefault(); searchOpen() ? closeSearch() : openSearch(); return;
+  }
+  if (e.key === '/' && !searchOpen() && !inField) { e.preventDefault(); openSearch(); return; }
+  if (e.key === 'Escape' && searchOpen()) closeSearch();
+});
+
+/* ============================== boot ================================= */
+(function boot() {
+  var hash = (location.hash || '').replace('#', '');
+  showTab(TABS.indexOf(hash) >= 0 ? hash : 'overview');
+  drawAllCharts();
+  onScroll();
+  document.documentElement.setAttribute('data-ready', '1');
+})();
+
+})();
+
 </script>
 
-</body></html>
+<script>
+/* Theme switch. The page follows the OS by default; this only adds an override,
+   and every storage access is guarded so a private window cannot break it. */
+(function () {
+  var root = document.documentElement, KEY = 'nhb-theme';
+  function sysDark() { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function dark() { var t = root.getAttribute('data-theme'); return t === 'dark' || (!t && sysDark()); }
+  function paint() {
+    var ic = dark() ? '\u25d1' : '\u25d0';
+    ['themeIcon', 'themeIcon2'].forEach(function (id) {
+      var e = document.getElementById(id); if (e) e.textContent = ic;
+    });
+  }
+  try { var s = localStorage.getItem(KEY); if (s === 'dark' || s === 'light') root.setAttribute('data-theme', s); } catch (e) {}
+  paint();
+  function flip() {
+    var next = dark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    paint();
+  }
+  ['themeToggle', 'themeToggle2'].forEach(function (id) {
+    var e = document.getElementById(id); if (e) e.addEventListener('click', flip);
+  });
+  if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paint);
+})();
+</script>
+
+</body>
+</html>
